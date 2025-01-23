@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import 'material-icons/iconfont/material-icons.css';
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge add Firefox */
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none; /* Firefox */
+}
+
+
+//:host ::ng-deep router-outlet + * {
+//  display: block;
+//  perspective: 1000px; /* Adds depth for the 3D effect */
+//  transform-style: preserve-3d; /* Ensures 3D transforms are respected */
+//}
+.component-container{
+  display: block;
+  perspective: 1000px; /* Adds depth for the 3D effect */
+  transform-style: preserve-3d; /* Ensures 3D transforms are respected */
+}
