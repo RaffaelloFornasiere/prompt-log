@@ -1,3 +1,5 @@
+name: prompt-generator
+
 services:
   angular-app:
     build:
