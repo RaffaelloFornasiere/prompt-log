@@ -16,6 +16,10 @@ export const routes: Routes = [
   {
     path: 'prompt',
     loadComponent: () => import('./prompt/prompt.component').then(m => m.PromptComponent)
+  },
+  {
+    path: 'prompt-settings',
+    loadComponent: () => import('./prompt-settings/prompt-settings.component').then(m => m.PromptSettingsComponent)
   }
 
 

@@ -1,8 +1,12 @@
-<div class="p-4 h-full">
+<div class="xl:p-4 p-1 h-full
+            absolute inset-1
+            md:static
+            z-10">
 
-  <div
-    [attr.data-opened]="sidenavService.opened()"
-    class="transition-all duration-300 bg-sky-800 drop-shadow-2xl h-full flex flex-col data-[opened=true]:w-80 w-24 rounded-xl p-2"
+  <div [attr.data-opened]="sidenavService.opened()"
+       class="transition-all
+       duration-300 bg-sky-800 drop-shadow-2xl flex
+        flex-col gap-10 data-[opened=true]:w-80 w-24 rounded-xl p-2"
   >
     <div class="w-full flex justify-end items-center">
       <div
@@ -13,12 +17,16 @@
       <span
         [style]="{'transform': 'rotate('+(sidenavService.opened()?180:0)+'deg)'}"
         class="material-icons-outlined"
-      >chevron_right</span>
+      >{{ sidenavService.opened()?'chevron_right':'apps' }}</span>
       </div>
     </div>
-    <div class="flex-grow flex-col  flex gap-2 justify-center items-center"
-
-    >
+    <div
+      [attr.data-opened]="sidenavService.opened()"
+      class="flex-grow
+      hidden
+      md:flex
+      data-[opened=true]:flex
+      flex-col gap-2 justify-center items-center">
       @for (item of sidenavService.items(); track item.name) {
         <div
           class="rounded-xl bg-sky-900 w-full p-4 cursor-pointer justify-center flex items-center gap-3 overflow-hidden"
@@ -28,10 +36,7 @@
             <span class="text-nowrap flex-grow"> {{ item.label }}  </span>
           }
         </div>
-
       }
-
     </div>
-
   </div>
 </div>
