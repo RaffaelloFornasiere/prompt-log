@@ -1,10 +1,134 @@
 <div class="flex w-full h-full flex-col items-center xl:p-10 p-2 gap-4">
 
   <div class="bg-sky-800 rounded-xl w-full flex flex-col gap-4 p-5 ">
-    <h1 class="text-center text-3xl">Actions</h1>
-    <div>
-  dsfsdf
-    </div>
+    <h1 class="text-center text-3xl bg-2">Actions</h1>
+    @for (action of actions; track action.name) {
+      <div class="relative border-slate-50/30 border rounded-xl p-3 pt-5 flex">
+        <label class="absolute  -top-3 bg-sky-800 w-fit px-1 left-2">{{ action.name }}</label>
+
+        <div class="flex-grow flex flex-col gap-4">
+          <div class="flex justify-start items-center gap-3">
+            <app-input
+              class="bg-sky-800"
+              [label]="'Name'"
+              (valueChange)="updateActions()"
+              [(value)]="action.name"
+            ></app-input>
+            <app-input
+              class="bg-sky-800 w-80"
+              [label]="'Description'"
+              (valueChange)="updateActions()"
+              [(value)]="action.description"
+            ></app-input>
+          </div>
+          <div class="flex items-center gap-2">
+
+            <label class="bg-sky-800 w-fit px-1 text-lg">Input Schema</label>
+            <button class="bg-sky-700 w-fit flex justify-center items-center text-white p-2 rounded-md"
+                    (click)="addInput(action)">
+              Add Input Parameter
+              <span class="material-icons">add</span>
+            </button>
+          </div>
+          @for (input of action.input_schema.properties; track $index) {
+            <div class="relative border-slate-50/30 border pt-5 p-3 rounded-xl">
+              <label class="absolute  -top-3 bg-sky-800 w-fit px-1 left-2">{{ input.name }}</label>
+              <div class="flex justify-between">
+
+                <div class="flex justify-start items-center gap-3">
+                  <app-input
+                    class="bg-sky-800"
+                    [label]="'Name'"
+                    [(value)]="input.name"
+                  ></app-input>
+                  <app-input
+                    class="bg-sky-800 w-80"
+                    [label]="'Description'"
+                    [(value)]="input.description"
+                  ></app-input>
+                  <app-select
+                    [(value)]="input.type"
+                    class="min-w-40 bg-sky-800"
+                    [items]="inputTypes"
+                    [label]="'Input Type'"
+                  >
+                  </app-select>
+                </div>
+                <button
+                  class="bg-sky-700 w-fit flex justify-center items-center  h-fit my-auto  text-white  p-2    rounded-md"
+                  (click)="deleteAction($index)">
+                  <span class="material-icons">delete</span>
+                </button>
+              </div>
+
+            </div>
+          }
+
+          <div class="flex items-center gap-2">
+
+            <label class="bg-sky-800 w-fit px-1 text-lg">Output Schema</label>
+            <button class="bg-sky-700 w-fit flex justify-center items-center text-white p-2 rounded-md"
+                    (click)="addOutput(action)">
+              Add Output Parameter
+              <span class="material-icons">add</span>
+            </button>
+          </div>
+
+          @for (output of action.output.properties; track $index) {
+            <div class="relative border-slate-50/30 border pt-5 p-3 rounded-xl">
+              <label class="absolute  -top-3 bg-sky-800 w-fit px-1 left-2">{{ output.name }}</label>
+              <div class="flex justify-between">
+
+                <div class="flex justify-start items-center gap-3">
+                  <app-input
+                    class="bg-sky-800"
+                    [label]="'Name'"
+                    [(value)]="output.name"
+                    (valueChange)="updateActions()"
+                  ></app-input>
+                  <app-input
+                    class="bg-sky-800 w-80"
+                    [label]="'Description'"
+                    (valueChange)="updateActions()"
+                    [(value)]="output.description"
+                  ></app-input>
+                  <app-select
+                    [(value)]="output.type"
+                    class="min-w-40 bg-sky-800"
+                    (valueChange)="updateActions()"
+                    [items]="inputTypes"
+                    [label]="'Output Type'"
+                  >
+                  </app-select>
+                </div>
+                <button
+                  class="bg-sky-700 w-fit flex justify-center items-center  h-fit my-auto  text-white  p-2    rounded-md"
+                  (click)="deleteAction($index)">
+                  <span class="material-icons">delete</span>
+                </button>
+              </div>
+
+            </div>
+          }
+
+
+        </div>
+        <div class="h-full flex flex-col justify-start items-center">
+          <button class="bg-sky-700 w-fit flex justify-center items-center
+           text-white
+         p-2
+           rounded-md" (click)="deleteAction($index)">
+            <span class="material-icons">delete</span>
+          </button>
+        </div>
+      </div>
+    }
+    <button (click)="addAction()" class="bg-sky-700 w-fit flex justify-center items-center
+     text-white p-2 rounded-md">
+      <span class="material-icons">add</span>
+    </button>
   </div>
 </div>
+
+
 

@@ -4,7 +4,7 @@ export const sidenavItems: SidenavItem [] = [
   {
     name: 'Prompt Settings',
     label: 'Prompt Settings',
-    route: 'prompt-settings',
+    route: 'settings',
     icon: 'settings'
   },
   {
@@ -31,5 +31,11 @@ export const sidenavItems: SidenavItem [] = [
     route: 'prompt',
     icon: 'check'
   },
+  {
+    name: 'Export',
+    label: 'Export',
+    route: 'export',
+    icon: 'cloud_download'
+  }
 
 ]

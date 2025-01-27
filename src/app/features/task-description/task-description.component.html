@@ -2,12 +2,26 @@
 
   <div class="bg-sky-800 rounded-xl w-full flex flex-col gap-4 p-5 ">
     <h1 class="text-center text-3xl">Task Description</h1>
-    <div>
-      <textarea
-        class="rounded-xl outline-none focus-visible:outline-double focus-visible:outline-slate-400 bg-sky-700 resize-none w-full h-96 p-5"
-        [ngModel]="description"
-        placeholder="Enter here the task description">
-      </textarea>
+    <div class="bg-sky-700 rounded-xl p-3 flex flex-col h-full gap-3">
+      <app-text-area
+        class="bg-sky-700 h-96"
+        [label]="'Prompt Description'"
+        [(value)]="promptService.taskDescription">
+      </app-text-area>
+
+      <button class="bg-sky-800 rounded-xl p-3 w-fit" (click)="improveWithAI()"> Improve with AI</button>
+      <hr>
+      <span class="text-lg">Variables</span>
+      @for (variable of promptService.variables(); track variable) {
+        <div class="flex gap-2">
+          <app-input class="bg-sky-700 w-1/2" [label]="'Name'" [(value)]="variable.name"></app-input>
+          <app-input class="bg-sky-700 w-1/2" [label]="'Description'" [(value)]="variable.description"></app-input>
+        </div>
+      }
+      <button class="bg-sky-800 rounded-xl  flex items-center w-fit p-3" (click)="addVariable()">
+        Add
+        <span class="material-icons">add</span>
+      </button>
     </div>
   </div>
 </div>

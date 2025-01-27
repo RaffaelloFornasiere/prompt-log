@@ -1,0 +1,20 @@
+<div class="fixed bottom-0 w-full flex flex-col justify-center items-center gap-4 p-5">
+
+  @for (toast of toastService.toasts(); track toast) {
+
+    <div class="p-3 rounded-xl w-96 flex justify-between items-center gap-4"
+         [class]="{
+           'bg-red-500/60': toast.type === 'error',
+           'bg-green-500/60': toast.type === 'success',
+           'bg-blue-500/60': toast.type === 'info',
+           'bg-yellow-500/60': toast.type === 'warning'
+         }"
+    >
+      <span>      {{ toast.message }}      </span>
+      <button class=" w-fit flex justify-center items-center  p-2 rounded-md"
+              (click)="toastService.removeToast(toast)">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+  }
+</div>

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PromptSettingsComponent } from './prompt-settings.component';
+import { SelectComponent } from './select.component';
 
-describe('SettingsComponent', () => {
-  let component: PromptSettingsComponent;
-  let fixture: ComponentFixture<PromptSettingsComponent>;
+describe('InputComponent', () => {
+  let component: SelectComponent;
+  let fixture: ComponentFixture<SelectComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PromptSettingsComponent]
+      imports: [SelectComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PromptSettingsComponent);
+    fixture = TestBed.createComponent(SelectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
