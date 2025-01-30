@@ -22,22 +22,13 @@ export class PromptComponent {
     this.toastService.addToast({message: 'Hello World', type: 'success'})
   }
 
-  delimiters = {
-    'line': {
-      start: '---Start {sectionName}---',
-      end: '---End {sectionName}---'
-    },
-    'xml': {
-      start: '<{sectionName}>',
-      end: '</{sectionName}>'
-    }
-  }
+
 
   buildDelimiterStart(sectionName: string){
-    return (this.delimiters as any)[this.promptService.settings().delimiter].start.replace('{sectionName}', sectionName)
+    return this.promptService.settings().delimiter.start.replace('{sectionName}', sectionName)
   }
   buildDelimiterEnd(sectionName: string){
-    return (this.delimiters as any)[this.promptService.settings().delimiter].end.replace('{sectionName}', sectionName)
+    return this.promptService.settings().delimiter.end.replace('{sectionName}', sectionName)
   }
 
 

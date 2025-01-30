@@ -10,12 +10,18 @@
           [(value)]="promptService.taskDescription">
         </app-text-area>
 
-        <markdown
-          lineNumbers
-          class="block float-end w-1/2 border rounded-xl p-4"
-          [data]="promptService.taskDescription()">
+        <div
+          class="relative block float-end w-1/2 border rounded-xl p-4"
+        >
+          <label class="absolute  -top-3 bg-sky-700 w-fit px-1 left-2">Markdown (that does not work properly yet)</label>
 
-        </markdown>
+          <markdown
+            class="block float-end"
+            lineNumbers
+            [data]="promptService.taskDescription()">
+
+          </markdown>
+        </div>
       </div>
 
       <button class="bg-sky-800 rounded-xl p-3 w-fit" (click)="improveWithAI()"> Improve with AI</button>
