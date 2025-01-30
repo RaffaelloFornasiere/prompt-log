@@ -2,23 +2,23 @@
 
   <div class="bg-sky-800 rounded-xl w-full flex flex-col gap-4 p-5 ">
     <h1 class="text-center text-3xl">Settings</h1>
-    <app-tabs [activeTab]="'Prompt Settings'" class="bg-sky-700 p-4 rounded-xl">
+    <app-tabs [activeTab]="'API'" class="bg-sky-700 p-4 rounded-xl">
       <div *appTab="'Prompt Settings'" class="flex flex-col gap-4">
         <div class="flex flex-col gap-4">
           <span>Sections Delimiter</span>
           <div class="rounded-xl overflow-hidden flex w-fit ">
             <button class="p-2 bg-sky-900 data-[checked=true]:bg-sky-800"
                     [attr.data-checked]="delimiter == 'line'"
-                    (click)="delimiter = 'line'"
+                    (click)="setDelimiter('line')"
             >Line</button>
             <button class="p-2 bg-sky-900 data-[checked=true]:bg-sky-800 border-x border-slate-400/70"
                     [attr.data-checked]="delimiter == 'xml'"
-                    (click)="delimiter = 'xml'"
+                    (click)="setDelimiter('xml')"
             >Xml
             </button>
             <button class="p-2 bg-sky-900 data-[checked=true]:bg-sky-800"
                     [attr.data-checked]="delimiter == 'custom'"
-                    (click)="delimiter = 'custom'"
+                    (click)="setDelimiter('custom')"
             >Custom
             </button>
           </div>
@@ -49,8 +49,58 @@
         </div>
       </div>
       <div *appTab="'API'" class="gap-4 flex flex-col py-3">
-        <app-input class="bg-sky-700" [label]="'Base url'" [(value)]="baseUrl"></app-input>
-        <app-input class="bg-sky-700" [label]="'Model name'" [(value)]="modelName"></app-input>
+        <div class="flex items-center gap-2">
+
+          <button class="bg-sky-700 w-fit flex justify-center items-center text-white p-2 rounded-md"
+                  (click)="addServer()">
+            Add Server
+            <span class="material-icons">add</span>
+          </button>
+        </div>
+        @for (server of settings.servers; track server){
+          <div class="relative bg-sky-800 border-slate-50/30 border pt-5 p-5 rounded-xl">
+            <label class="absolute  -top-3 bg-sky-800 w-fit px-1 left-2">{{ server.baseUrl }}</label>
+            <div class="flex justify-between mt-3">
+              <div class="flex justify-start items-center gap-3">
+                Active Server:
+                <div class="relative inline-block w-11 h-5 my-2">
+                  <input [checked] ="server.active" #checkbox type="checkbox"
+                         (click)="checkbox.checked?toggleActiveServer($index, checkbox.checked):''"
+                         class="peer appearance-none w-11 h-5 bg-sky-700 rounded-full checked:bg-sky-700 cursor-pointer transition-colors duration-300" />
+                  <label class="absolute top-0 left-0 w-5 h-5 bg-sky-900 rounded-full border border-sky-700
+            shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-sky-700 cursor-pointer">
+                  </label>
+                </div>
+                <app-input
+                  class="bg-sky-800"
+                  [label]="'Base Url'"
+                  [(value)]="server.baseUrl"
+                  (valueChange)="updateServers()"
+                ></app-input>
+                <app-input
+                  class="bg-sky-800 w-80"
+                  [label]="'Model name'"
+                  [(value)]="server.modelName"
+                  (valueChange)="updateServers()"
+
+                ></app-input>
+                <app-input
+                class="bg-sky-800 w-80"
+                [label]="'Api Key'"
+                [(value)]="server.apiKey"
+                (valueChange)="updateServers()"
+
+              ></app-input>
+              </div>
+              <button
+                class="bg-sky-700 w-fit flex justify-center items-center  h-fit my-auto  text-white  p-2    rounded-md"
+                (click)="deleteServer($index)">
+                <span class="material-icons">delete</span>
+              </button>
+            </div>
+
+          </div>
+        }
       </div>
 
     </app-tabs>

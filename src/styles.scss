@@ -4,7 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 @import 'material-icons/iconfont/material-icons.css';
-
+@import 'prismjs/themes/prism-okaidia.css';
+@import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
+@import 'prismjs/plugins/line-highlight/prism-line-highlight.css';
 
 
 /* Hide scrollbar for Chrome, Safari and Opera */

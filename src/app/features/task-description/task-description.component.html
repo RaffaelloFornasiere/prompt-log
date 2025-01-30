@@ -3,11 +3,20 @@
   <div class="bg-sky-800 rounded-xl w-full flex flex-col gap-4 p-5 ">
     <h1 class="text-center text-3xl">Task Description</h1>
     <div class="bg-sky-700 rounded-xl p-3 flex flex-col h-full gap-3">
-      <app-text-area
-        class="bg-sky-700 h-96"
-        [label]="'Prompt Description'"
-        [(value)]="promptService.taskDescription">
-      </app-text-area>
+      <div class="flex w-full gap-3">
+        <app-text-area
+          class="bg-sky-700 min-h-96 w-1/2"
+          [label]="'Prompt Description'"
+          [(value)]="promptService.taskDescription">
+        </app-text-area>
+
+        <markdown
+          lineNumbers
+          class="block float-end w-1/2 border rounded-xl p-4"
+          [data]="promptService.taskDescription()">
+
+        </markdown>
+      </div>
 
       <button class="bg-sky-800 rounded-xl p-3 w-fit" (click)="improveWithAI()"> Improve with AI</button>
       <hr>
@@ -25,4 +34,3 @@
     </div>
   </div>
 </div>
-

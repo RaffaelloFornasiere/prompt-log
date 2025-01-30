@@ -15,8 +15,14 @@ export class PromptService {
   settings = signal<any>({
     delimiter: ",",
     impersonate: null,
-    baseUrl: "http://localhost:1234",
-    modelName: "",
+    servers: [
+      {
+        baseUrl: "http://localhost:1234",
+        modelName: "",
+        apiKey: "",
+        active: true,
+      }
+    ]
   });
 
 
