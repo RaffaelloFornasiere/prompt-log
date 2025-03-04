@@ -1,8 +1,7 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {ActivatedRoute, RouterOutlet} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {RouterOutlet} from "@angular/router";
 import {SidenavComponent} from "../sidenav/sidenav.component";
 import {ToastComponent} from '../../shared/toast/toast/toast.component';
-import {StoreService} from '../../features/service/store.service';
 
 @Component({
   selector: "app-main",

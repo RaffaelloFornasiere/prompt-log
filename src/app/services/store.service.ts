@@ -1,6 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {addDoc, collection, collectionData, deleteDoc, doc, Firestore, setDoc} from '@angular/fire/firestore';
 import {fromPromise} from 'rxjs/internal/observable/innerFrom';
+import {AuthService} from '../auth/auth.service';
 
 interface Prompt {
   id: string,
@@ -10,7 +11,12 @@ interface Prompt {
 @Injectable({providedIn: 'root'})
 export class StoreService {
   firestore = inject(Firestore)
+  authService = inject(AuthService).user
+
   prompts = collection(this.firestore, 'prompts')
+
+
+
   public prompts$ = collectionData(this.prompts, {idField: 'id'})
 
   getPrompts() {

@@ -17,10 +17,4 @@ export class SidenavComponent {
   sidenavService = inject(SidenavService)
   authService = inject(AuthService)
 
-
-  login() {
-    console.log('login')
-    this.authService.googleSignIn().subscribe()
-  }
-
 }
