@@ -1,0 +1,30 @@
+<div class="flex w-full h-full flex-col items-center p-10 gap-4">
+
+  <div class="bg-sky-800 rounded-xl w-full flex flex-col gap-4 p-5 ">
+    <h1 class="text-center text-3xl">Task Description</h1>
+    <div class="bg-sky-700 rounded-xl p-3 flex flex-col h-full gap-3">
+      <div class="flex w-full gap-3">
+        <app-text-area
+          class="bg-sky-700 min-h-96 w-1/2"
+          [label]="'Prompt Description'"
+          [(value)]="promptService.taskDescription">
+        </app-text-area>
+
+      </div>
+
+      <button class="bg-sky-800 rounded-xl p-3 w-fit" (click)="improveWithAI()"> Improve with AI</button>
+      <hr>
+      <span class="text-lg">Variables</span>
+      @for (variable of promptService.variables(); track variable) {
+        <div class="flex gap-2">
+          <app-input class="bg-sky-700 w-1/2" [label]="'Name'" [(value)]="variable.name"></app-input>
+          <app-input class="bg-sky-700 w-1/2" [label]="'Description'" [(value)]="variable.description"></app-input>
+        </div>
+      }
+      <button class="bg-sky-800 rounded-xl  flex items-center w-fit p-3" (click)="addVariable()">
+        Add
+        <span class="material-icons">add</span>
+      </button>
+    </div>
+  </div>
+</div>

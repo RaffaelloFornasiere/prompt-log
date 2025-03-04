@@ -1,0 +1,10 @@
+@use "tailwindcss";
+
+.tab {
+  @apply border-slate-200 border-0 border-b  px-4
+}
+
+.selected-tab {
+  @apply  border-t border-l border-r rounded-t-xl border-b-0
+}
+

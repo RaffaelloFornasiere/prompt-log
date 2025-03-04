@@ -1,0 +1,24 @@
+<div class="bg-inherit p-2 rounded-lg w-full">
+  <div class="relative bg-inherit w-full">
+    <select
+      [(ngModel)]="value"
+      #select
+      class="peer w-full bg-transparent h-10  rounded-lg  placeholder-transparent ring-2 px-2
+      ring-slate-400 focus:ring-slate-200 focus:outline-none focus:text-slate-200"
+    >
+      <option [ngValue]="null" class="text-transparent bg-transparent"></option>
+      @for (item of items(); track $index) {
+        <option [ngValue]="item">{{ transformItem()(item) }}</option>
+      }
+    </select>
+    <label
+      (click)="select.focus()"
+      [attr.data-selected]="value() != null"
+      class="absolute cursor-text left-0 -top-3 text-sm text-slate-400 bg-inherit
+        mx-1 px-1
+        data-[selected=false]:text-base
+        data-[selected=false]:text-slate-400
+        data-[selected=false]:top-2
+        peer-focus:-top-3 peer-focus:text-slate-200 peer-focus:text-sm transition-all">{{ label() }}</label>
+  </div>
+</div>

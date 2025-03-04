@@ -1,0 +1,21 @@
+<div class="flex py-2">
+
+  <div class="tab pl-5"></div>
+  @for (tab of tabs; track tab.appTab()) {
+    <div class="p-2 tab fg-1"
+         [class.selected-tab]="activeTab() === tab.appTab()"
+         (click)="selectTab(tab.appTab())"
+    >{{ tab.appTab() }}
+    </div>
+  }
+  <div class="tab flex-grow"></div>
+</div>
+
+<div class="flex flex-col">
+  @for (tabContent of tabs; track tabContent) {
+    @if (tabContent.appTab() === activeTab()) {
+      <ng-container
+        *ngTemplateOutlet="tabContent.template"></ng-container>
+    }
+  }
+</div>

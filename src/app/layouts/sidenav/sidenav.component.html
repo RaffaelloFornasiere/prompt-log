@@ -1,0 +1,69 @@
+<div class="xl:p-4 p-1 h-full absolute inset-1 md:static z-10">
+
+  <div [attr.data-opened]="sidenavService.opened()"
+       class="transition-all h-full
+       duration-300 bg-sky-800 drop-shadow-2xl flex
+        flex-col gap-10 data-[opened=true]:w-80 w-24 rounded-xl p-2"
+  >
+    <div class="w-full flex justify-end items-center">
+      <div
+        (click)="sidenavService.toggle()"
+        [class.w-full]="!sidenavService.opened()"
+        class="bg-sky-900 p-4 items-center justify-center cursor-pointer
+          rounded-xl text-4xl flex transition-all select-none">
+      <span
+        [style]="{'transform': 'rotate('+(sidenavService.opened()?180:0)+'deg)'}"
+        class="material-icons-outlined"
+      >{{ sidenavService.opened() ? 'chevron_right' : 'apps' }}</span>
+      </div>
+    </div>
+    <div
+      [attr.data-opened]="sidenavService.opened()"
+      class="flex-grow
+      hidden
+      md:flex
+      data-[opened=true]:flex
+      flex-col gap-2 justify-center items-center">
+      @for (item of sidenavService.items(); track item.name) {
+        <div
+          class="rounded-xl bg-sky-900 w-full p-4 cursor-pointer justify-center flex items-center gap-3 overflow-hidden"
+          [routerLink]="item.route">
+          <span class="material-icons-outlined text-4xl">{{ item.icon }}</span>
+          @if (sidenavService.opened()) {
+            <span class="text-nowrap flex-grow"> {{ item.label }}  </span>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="flex items-center justify-center w-full">
+      @if (!authService.user()) {
+
+        <div class="px-6 sm:px-0 max-w-sm" (click)="authService.googleSignIn().subscribe()">
+          <button type="button" class="text-white w-full
+            bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center
+            inline-flex items-center justify-between mr-2 mb-2">
+            <svg class="mr-2 -ml-1 w-4 h-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google"
+                 role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512">
+              <path fill="currentColor"
+                    d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path>
+            </svg>
+            Sign in with Google
+            <div></div>
+          </button>
+        </div>
+
+
+      } @else {
+        <button class="p-3 cursor-pointer flex items-center justify-center rounded-xl bg-sky-700 gap-1"
+                (click)="authService.signOut()"
+        >
+          Logout
+          <span class="material-icons-outlined">logout</span>
+        </button>
+      }
+    </div>
+  </div>
+
+
+</div>
