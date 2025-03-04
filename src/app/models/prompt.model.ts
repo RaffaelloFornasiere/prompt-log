@@ -15,9 +15,10 @@ export interface Tool {
 }
 
 export interface Prompt {
+  title: string;
   description: string;
-  variables: Variable;
+  variables: Variable[];
   examples: Example[];
-  tools: string[];
-  outputFormat: Variable;
+  tools: Tool[];
+  outputFormat: Variable | null;
 }

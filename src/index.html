@@ -5,14 +5,61 @@
   <title>PromptGenerator</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+          integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+
+    #honeycomb {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      background: center url("data:image/svg+xml,%3Csvg width='100' height='170' viewBox='0 0 100 170' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_1_2)' fill='rgba(30,30,30,1)'%3E%3Cpath d='M50.5 35L97 61.75V115.25L50.5 142L4 115.25V61.75L50.5 35Z'/%3E%3Cpath d='M-0.499998 -50L46 -23.25V30.25L-0.499998 57L-47 30.25V-23.25L-0.499998 -50Z'/%3E%3Cpath d='M100.5 -50L147 -23.25V30.25L100.5 57L54 30.25V-23.25L100.5 -50Z'/%3E%3Cpath d='M-0.499998 120L46 146.75V200.25L-0.499998 227L-47 200.25V146.75L-0.499998 120Z'/%3E%3Cpath d='M100.5 120L147 146.75V200.25L100.5 227L54 200.25V146.75L100.5 120Z'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_1_2'%3E%3Crect width='100' height='169.5' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A");
+      background-size: 250px;
+    }
+
+    #gradient {
+      background: radial-gradient(rgba(255, 0, 255, 1), transparent 50%);
+      --size: 2000px;
+      width: var(--size);
+      height: var(--size);
+      position: fixed;
+      top: calc(var(--size) / -2);
+      left: calc(var(--size) / -2);
+      z-index: 1;
+    }
+
+  </style>
 </head>
-<body class="h-dvh w-screen text-slate-300/80">
+<body id="body" class="bg-black h-dvh w-screen text-slate-300/80">
+<div class="fixed w-full h-full bg-linear-to-bl from-fuchsia-300/50 to-blue-300/50">
+</div>
+
+<!--<div id="playpen" style="position: fixed; inset: 0; z-index: 0; filter: blur(10px);">-->
+<!--  <div id="gradient"></div>-->
+<!--  <div id="honeycomb"></div>-->
+<!--</div>-->
 
 <div class="md:hidden text-black text-2xl">
   This application is designed for desktop use only (yet).
 </div>
 <app-main class="md:visible invisible"></app-main>
 
+<script>
+
+  let mousePosition = {x: 0, y: 0}
+  document.addEventListener('mousemove', ({clientX, clientY}) => {
+    mousePosition = {x: clientX, y: clientY}
+
+    window.requestAnimationFrame(() => {
+      document.getElementById('gradient')
+        .style.transform = `translate(${mousePosition.x}px, ${mousePosition.y}px)`
+    })
+  })
+
+
+</script>
 </body>
 </html>

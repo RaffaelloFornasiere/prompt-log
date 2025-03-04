@@ -1,4 +1,4 @@
-import {inject, Injectable} from '@angular/core';
+import {computed, inject, Injectable} from '@angular/core';
 import {addDoc, collection, collectionData, deleteDoc, doc, Firestore, setDoc} from '@angular/fire/firestore';
 import {fromPromise} from 'rxjs/internal/observable/innerFrom';
 import {AuthService} from '../auth/auth.service';
@@ -11,29 +11,27 @@ interface Prompt {
 @Injectable({providedIn: 'root'})
 export class StoreService {
   firestore = inject(Firestore)
-  authService = inject(AuthService).user
+  authService = inject(AuthService)
 
-  prompts = collection(this.firestore, 'prompts')
+  prompts = computed(() =>
+    collection(this.firestore, `users/${this.authService.user()?.uid}/prompts`));
 
-
-
-  public prompts$ = collectionData(this.prompts, {idField: 'id'})
 
   getPrompts() {
-    return collectionData(this.prompts, {idField: 'id'})
+    return collectionData(this.prompts(), {idField: 'id'})
   }
 
   addPrompt(prompt: any) {
-    return fromPromise(addDoc(this.prompts, prompt))
+    return fromPromise(addDoc(this.prompts(), prompt))
   }
 
   removePrompt(prompt: Prompt) {
-    const docRef = doc(this.prompts, 'prompts/'+prompt.id)
+    const docRef = doc(this.prompts(), 'prompts/' + prompt.id)
     return fromPromise(deleteDoc(docRef))
   }
 
   updatePrompt(prompt: Prompt) {
-    const docRef = doc(this.prompts, 'prompts/'+prompt.id)
+    const docRef = doc(this.prompts(), 'prompts/' + prompt.id)
     return fromPromise(setDoc(docRef, prompt))
   }
 

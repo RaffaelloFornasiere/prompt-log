@@ -17,7 +17,6 @@ export class AuthService {
 
   constructor() {
     onAuthStateChanged(this.auth, (user) => {
-      console.log(user)
       if (user) this.user$.next(user as unknown as User)
       else this.user$.next(null)
     })

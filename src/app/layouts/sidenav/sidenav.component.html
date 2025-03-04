@@ -1,8 +1,8 @@
-<div class="xl:p-4 p-1 h-full absolute inset-1 md:static z-10">
+<div class="xl:p-4 p-1 h-full absolute inset-1 md:static z-10 drop-shadow-2xl">
 
   <div [attr.data-opened]="sidenavService.opened()"
        class="transition-all h-full
-       duration-[300ms] bg-sky-800 drop-shadow-2xl flex
+       duration-[300ms] bg-primary-4/50 drop-shadow-2xl flex
         flex-col gap-10 data-[opened=true]:w-80 w-16 rounded-xl p-2"
   >
     <div class="w-full flex items-center"
@@ -11,7 +11,7 @@
 
       <div
         (click)="sidenavService.toggle()"
-        class="bg-sky-900 p-3 w-fit d-flex items-center justify-center cursor-pointer rounded-xl text-4xl flex transition-all select-none">
+        class="bg-primary-900 p-3 w-fit d-flex items-center justify-center cursor-pointer rounded-xl text-4xl flex transition-all select-none">
         <span
           [style]="{'transform': 'rotate('+(sidenavService.opened()?180:0)+'deg)'}"
           class="material-icons-outlined"
