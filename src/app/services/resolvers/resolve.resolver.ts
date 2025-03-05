@@ -2,7 +2,7 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import {Observable, mergeMap, of, map, switchMap, tap} from 'rxjs';
 import { inject } from '@angular/core';
 import {AuthService} from '../../auth/auth.service';
-import {PromptsService} from '../../services/prompts.service';
+import {PromptsService} from '../prompts.service';
 import {Prompt} from '../../models/prompt.model';
 
 const promptResolve = (route: ActivatedRouteSnapshot): Observable<any | undefined> | Observable<null> => {

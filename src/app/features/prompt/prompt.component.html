@@ -4,35 +4,36 @@
 
     <h1 class="text-center text-3xl">Final Prompt</h1>
     <div class="relative top-14 left-[calc(100%-2.5rem)] w-fit cursor-pointer"
-    (click)="copyText(prompt.innerText); toastService.addToast({message:'Copied to clipboard', type:'success'})"
+    (click)="copyText(_prompt.innerText); toastService.addToast({message:'Copied to clipboard', type:'success'})"
       >
       <span class="material-icons">content_copy</span>
     </div>
-    <div #prompt class="border rounded-xl p-4 min-h-32 whitespace-pre">
+    <div #_prompt class="border rounded-xl p-4 min-h-32 whitespace-pre">
 
-<!--      {{buildDelimiterStart('Actions')}}-->
-<!--      {{'\n'}}-->
-<!--      @for (action of promptService.actions(); track action) {-->
-<!--        {{ JSON.stringify(action, null, 2) }}-->
-<!--      }-->
-<!--      {{'\n'}}-->
-<!--      {{buildDelimiterEnd('Actions')}}-->
-<!--      {{'\n'}}-->
-<!--      {{'\n'}}-->
+      {{buildDelimiterStart('Actions')}}
+      {{'\n'}}
+      @for (action of prompt?.tools; track action) {
+        {{ JSON.stringify(action, null, 2) }}
+      }
+      {{'\n'}}
+      {{buildDelimiterEnd('Actions')}}
+      {{'\n'}}
+      {{'\n'}}
 
 
-<!--      {{ promptService.taskDescription() }}-->
-<!--      {{'\n'}}-->
-<!--      {{'\n'}}-->
-<!--      {{buildDelimiterStart('Examples')}}-->
-<!--      {{'\n'}}-->
-<!--      @for (example of promptService.examples(); track example) {-->
-<!--        {{ example.content }}-->
-<!--      }-->
-<!--      {{'\n'}}-->
-<!--      {{buildDelimiterEnd('Examples')}}-->
-<!--      {{'\n'}}-->
-<!--      {{'\n'}}-->
+      {{ prompt?.taskDescription }}
+      {{'\n'}}
+      {{'\n'}}
+      {{buildDelimiterStart('Examples')}}
+      {{'\n'}}
+
+      @for (example of prompt?.examples; track example) {
+        {{ example.content }}
+      }
+      {{'\n'}}
+      {{buildDelimiterEnd('Examples')}}
+      {{'\n'}}
+      {{'\n'}}
 
     </div>
   </div>

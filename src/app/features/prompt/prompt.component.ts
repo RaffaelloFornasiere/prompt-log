@@ -5,6 +5,7 @@ import {ToastService} from '../../shared/toast/toast.service';
 import {ActivatedRoute} from '@angular/router';
 import {PromptsService} from '../../services/prompts.service';
 import {Prompt} from '../../models/prompt.model';
+import {SettingsService} from '../../services/settings.service';
 
 @Component({
   selector: 'app-prompt',
@@ -18,8 +19,10 @@ import {Prompt} from '../../models/prompt.model';
 export class PromptComponent {
 
   toastService = inject(ToastService);
+  settingsService = inject(SettingsService);
   activatedRoute = inject(ActivatedRoute);
   prompt: Prompt | undefined = undefined;
+
 
   constructor() {
     console.log('PromptComponent');
@@ -30,7 +33,7 @@ export class PromptComponent {
   }
 
   buildDelimiterStart(sectionName: string) {
-    return sectionName
+    return (this.settingsService.settings()?.delimiter as any).start.replace('{sectionName}', sectionName);
   }
 
   buildDelimiterEnd(sectionName: string) {

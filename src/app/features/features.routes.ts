@@ -1,5 +1,5 @@
 import {Routes} from '@angular/router';
-import promptResolve from './prompt/resolve.service';
+import promptResolve from '../services/resolvers/resolve.resolver';
 
 export const routes: Routes = [
   {

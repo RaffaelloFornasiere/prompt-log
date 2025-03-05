@@ -26,6 +26,7 @@ export class SettingsService {
     });
   }
 
+
   updateSettings(settings: UserSettings) {
     setDoc(doc(this.firestore, 'users', this.authService.user()!.uid), {settings}).then()
   }

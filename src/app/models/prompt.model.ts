@@ -18,6 +18,7 @@ export interface Prompt {
   id: string
   title: string;
   description: string;
+  taskDescription: string;
   variables: Variable[];
   examples: Example[];
   tools: Tool[];
