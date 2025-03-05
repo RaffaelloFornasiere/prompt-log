@@ -49,15 +49,15 @@
 
 <script>
 
-  let mousePosition = {x: 0, y: 0}
-  document.addEventListener('mousemove', ({clientX, clientY}) => {
-    mousePosition = {x: clientX, y: clientY}
-
-    window.requestAnimationFrame(() => {
-      document.getElementById('gradient')
-        .style.transform = `translate(${mousePosition.x}px, ${mousePosition.y}px)`
-    })
-  })
+  // let mousePosition = {x: 0, y: 0}
+  // document.addEventListener('mousemove', ({clientX, clientY}) => {
+  //   mousePosition = {x: clientX, y: clientY}
+  //
+  //   window.requestAnimationFrame(() => {
+  //     document.getElementById('gradient')
+  //       .style.transform = `translate(${mousePosition.x}px, ${mousePosition.y}px)`
+  //   })
+  // })
 
 
 </script>

@@ -4,12 +4,15 @@ import {RouterLink} from '@angular/router';
 import {AuthService} from '../../auth/auth.service';
 import {SettingsService} from '../../services/settings.service';
 import {PromptService} from '../../services/prompt.service';
+import {NgOptimizedImage} from '@angular/common';
+import {ShineEffectDirective} from '../../shared/directives/shine.directive';
 
 @Component({
   selector: 'app-sidenav',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    ShineEffectDirective,
   ],
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss'

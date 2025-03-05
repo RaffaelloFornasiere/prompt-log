@@ -1,4 +1,4 @@
-<div class="xl:p-4 p-1 h-full absolute inset-1 md:static z-10 drop-shadow-2xl">
+<div class="xl:p-4 p-1 h-full absolute inset-1 md:static z-10 drop-shadow-2xl" >
 
   <div [attr.data-opened]="sidenavService.opened()"
        class="transition-all h-full
@@ -46,8 +46,8 @@
       @for (item of sidenavService.items(); track item.name) {
         <div class="w-full flex items-center justify-center">
 
-          <div
-            class="rounded-xl bg-sky-900 w-full p-3 cursor-pointer flex items-center gap-5 overflow-hidden"
+          <div appShineEffect
+            class="rounded-xl shine bg-sky-900 w-full p-3 cursor-pointer flex items-center gap-5 overflow-hidden"
 
             [routerLink]="item.route">
             <span class="material-icons-outlined text-4xl">{{ item.icon }}</span>
