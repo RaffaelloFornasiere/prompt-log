@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {RouterOutlet} from "@angular/router";
 import {SidenavComponent} from "../sidenav/sidenav.component";
 import {ToastComponent} from '../../shared/toast/toast/toast.component';
+import {Auth} from '@angular/fire/auth';
 
 @Component({
   selector: "app-main",
@@ -11,7 +12,15 @@ import {ToastComponent} from '../../shared/toast/toast/toast.component';
   styleUrl: "./main.component.scss",
 })
 export class MainComponent implements OnInit {
+  loading = true;
+  private auth = inject(Auth)
 
+  constructor() {
+    this.auth.authStateReady().then(() => {
+      console.log('Auth state ready')
+      this.loading = false
+    })
+  }
   ngOnInit() {
   }
 }

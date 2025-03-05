@@ -1,5 +1,5 @@
-import {inject, Injectable, signal} from '@angular/core';
-import {map, Observable, of, Subject, switchMap, tap} from 'rxjs';
+import {computed, effect, inject, Injectable, signal} from '@angular/core';
+import {BehaviorSubject, map, Observable, of, Subject, switchMap, tap} from 'rxjs';
 import {Router} from '@angular/router';
 import {doc, Firestore, getDoc} from '@angular/fire/firestore';
 import {Auth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut, User} from '@angular/fire/auth';
@@ -9,7 +9,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
-  user$: Subject<User | null | undefined> = new Subject()
+  user$: BehaviorSubject<User | null | undefined> = new BehaviorSubject<User | null | undefined>(null)
   user = toSignal(this.user$)
   auth = inject(Auth)
   firestore = inject(Firestore)
@@ -17,9 +17,13 @@ export class AuthService {
 
   constructor() {
     onAuthStateChanged(this.auth, (user) => {
-      if (user) this.user$.next(user as unknown as User)
-      else this.user$.next(null)
+      if (user)
+        this.user$.next(user as unknown as User)
     })
+  }
+
+  getAuthState() {
+    return this.auth.authStateReady()
   }
 
 

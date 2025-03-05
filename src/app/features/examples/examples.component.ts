@@ -3,6 +3,7 @@ import {FormsModule} from '@angular/forms';
 import { PromptService } from '../service/prompt.service';
 import { InputComponent } from '../../shared/input/input.component';
 import { TextAreaComponent } from '../../shared/text-area/text-area.component';
+import {ShineEffectDirective} from '../../shared/directives/shine.directive';
 
 
 
@@ -18,7 +19,8 @@ export type Example = {
   imports: [
     FormsModule,
     InputComponent,
-    TextAreaComponent
+    TextAreaComponent,
+    ShineEffectDirective
   ],
   templateUrl: './examples.component.html',
   styleUrl: './examples.component.scss',

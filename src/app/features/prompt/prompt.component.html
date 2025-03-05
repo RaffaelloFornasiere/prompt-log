@@ -1,6 +1,6 @@
 <div class="flex w-full h-full flex-col items-center p-10 gap-4 overflow-scroll">
 
-  <div class="relative bg-sky-800 rounded-xl w-full flex flex-col gap-4 p-5 ">
+  <div class="relative bg-sky-800/30 rounded-xl w-full flex flex-col gap-4 p-5 ">
 
     <h1 class="text-center text-3xl">Final Prompt</h1>
     <div class="relative top-14 left-[calc(100%-2.5rem)] w-fit cursor-pointer"
@@ -10,29 +10,29 @@
     </div>
     <div #prompt class="border rounded-xl p-4 min-h-32 whitespace-pre">
 
-      {{buildDelimiterStart('Actions')}}
-      {{'\n'}}
-      @for (action of promptService.actions(); track action) {
-        {{ JSON.stringify(action, null, 2) }}
-      }
-      {{'\n'}}
-      {{buildDelimiterEnd('Actions')}}
-      {{'\n'}}
-      {{'\n'}}
+<!--      {{buildDelimiterStart('Actions')}}-->
+<!--      {{'\n'}}-->
+<!--      @for (action of promptService.actions(); track action) {-->
+<!--        {{ JSON.stringify(action, null, 2) }}-->
+<!--      }-->
+<!--      {{'\n'}}-->
+<!--      {{buildDelimiterEnd('Actions')}}-->
+<!--      {{'\n'}}-->
+<!--      {{'\n'}}-->
 
 
-      {{ promptService.taskDescription() }}
-      {{'\n'}}
-      {{'\n'}}
-      {{buildDelimiterStart('Examples')}}
-      {{'\n'}}
-      @for (example of promptService.examples(); track example) {
-        {{ example.content }}
-      }
-      {{'\n'}}
-      {{buildDelimiterEnd('Examples')}}
-      {{'\n'}}
-      {{'\n'}}
+<!--      {{ promptService.taskDescription() }}-->
+<!--      {{'\n'}}-->
+<!--      {{'\n'}}-->
+<!--      {{buildDelimiterStart('Examples')}}-->
+<!--      {{'\n'}}-->
+<!--      @for (example of promptService.examples(); track example) {-->
+<!--        {{ example.content }}-->
+<!--      }-->
+<!--      {{'\n'}}-->
+<!--      {{buildDelimiterEnd('Examples')}}-->
+<!--      {{'\n'}}-->
+<!--      {{'\n'}}-->
 
     </div>
   </div>

@@ -1,7 +1,10 @@
-import { Component, inject } from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import { PromptService } from '../service/prompt.service';
-import { ToastService } from '../../shared/toast/toast.service';
+import {PromptService} from '../service/prompt.service';
+import {ToastService} from '../../shared/toast/toast.service';
+import {ActivatedRoute} from '@angular/router';
+import {PromptsService} from '../../services/prompts.service';
+import {Prompt} from '../../models/prompt.model';
 
 @Component({
   selector: 'app-prompt',
@@ -14,26 +17,28 @@ import { ToastService } from '../../shared/toast/toast.service';
 })
 export class PromptComponent {
 
-  promptService = inject(PromptService);
   toastService = inject(ToastService);
+  activatedRoute = inject(ActivatedRoute);
+  prompt: Prompt | undefined = undefined;
 
+  constructor() {
+    console.log('PromptComponent');
+    this.activatedRoute.data.subscribe(({prompt}) => {
+      this.prompt = prompt;
+      console.log('Prompt', prompt);
+    });
+  }
 
-  sendToast() {
-    this.toastService.addToast({message: 'Hello World', type: 'success'})
+  buildDelimiterStart(sectionName: string) {
+    return sectionName
+  }
+
+  buildDelimiterEnd(sectionName: string) {
+    return sectionName
   }
 
 
-
-  buildDelimiterStart(sectionName: string){
-    return this.promptService.settings().delimiter.start.replace('{sectionName}', sectionName)
-  }
-  buildDelimiterEnd(sectionName: string){
-    return this.promptService.settings().delimiter.end.replace('{sectionName}', sectionName)
-  }
-
-
-
-  copyText(val: string){
+  copyText(val: string) {
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
@@ -46,5 +51,6 @@ export class PromptComponent {
     document.execCommand('copy');
     document.body.removeChild(selBox);
   }
+
   protected readonly JSON = JSON;
 }

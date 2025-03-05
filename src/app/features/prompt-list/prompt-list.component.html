@@ -1,0 +1,44 @@
+<div class="flex w-full h-full flex-col items-center xl:p-10 p-2 gap-4">
+
+  <div class="bg-sky-800/30 rounded-xl w-full flex flex-col gap-4 p-5 ">
+    <h1 class="text-center text-3xl bg-2">Prompts</h1>
+
+
+    <div class="flex w-full justify-end">
+
+      <div appShineEffect class="p-3 rounded-xl w-fit flex items-center">
+        <span class="material-icons">search</span>
+      </div>
+      <div appShineEffect class="p-3 rounded-xl w-fit flex items-center"
+           (click)="promptsService.newPrompt({})"
+      >
+        <span class="material-icons">add</span>
+      </div>
+    </div>
+    @if (prompts()?.length === 0) {
+      <div class="alert alert-warning" id="no-result">
+        <span>No prompts found</span>
+      </div>
+    } @else {
+      @for (prompt of prompts(); track prompt.id) {
+        <div appShineEffect class="cursor-pointer hover:bg-white rounded-xl p-3 border border-gray-300/20 flex justify-between items-center"
+        [routerLink]="['prompt', prompt.id]"
+        >
+          <div>
+            <span class="text-xl"> {{ prompt.title }}</span>
+            <br>
+            <span class="text-sm"> {{ prompt.description }}</span>
+          </div>
+          <div class="cursor-pointer hover:bg-gray-300/20 rounded-xl p-3 flex items-center group">
+            <span class="transition-all material-icons  group-hover:scale-110"
+            (click)="promptsService.deletePrompt(prompt); $event.stopPropagation()"
+            >delete</span>
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>
+
+
+

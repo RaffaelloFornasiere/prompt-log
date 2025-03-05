@@ -4,6 +4,7 @@ import { InputComponent } from "../../shared/input/input.component";
 import { KeyValuePipe } from "@angular/common";
 import { SelectComponent } from "../../shared/select/select.component";
 import { PromptService } from "../service/prompt.service";
+import {ShineEffectDirective} from '../../shared/directives/shine.directive';
 
 export type PropertyType =
   | "object"
@@ -64,7 +65,7 @@ export type ViewToolType = Omit<ToolType, "input_schema" | "output"> & {
 @Component({
   selector: "app-actions",
   standalone: true,
-  imports: [FormsModule, InputComponent, SelectComponent],
+  imports: [FormsModule, InputComponent, SelectComponent, ShineEffectDirective],
   templateUrl: "./actions.component.html",
   styleUrl: "./actions.component.scss",
 })

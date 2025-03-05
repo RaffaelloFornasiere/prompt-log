@@ -2,15 +2,9 @@ import {SidenavItem} from './sidenav.service';
 
 export const sidenavItems: SidenavItem [] = [
   {
-    name: 'Prompt Settings',
-    label: 'Prompt Settings',
-    route: 'settings',
-    icon: 'settings'
-  },
-  {
     name: 'Task Description',
     label: 'Task Description',
-    route: '',
+    route: 'task-description',
     icon: 'task'
   },
   {
@@ -28,7 +22,7 @@ export const sidenavItems: SidenavItem [] = [
   {
     name: 'Prompt',
     label: 'Prompt',
-    route: 'prompt',
+    route: '',
     icon: 'check'
   },
   {

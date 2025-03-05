@@ -7,6 +7,7 @@ import {
 import { InputComponent } from "../../shared/input/input.component";
 import { PromptService } from "../service/prompt.service";
 import { SelectComponent } from "../../shared/select/select.component";
+import {ShineEffectDirective} from '../../shared/directives/shine.directive';
 
 @Component({
   selector: "app-settings",
@@ -16,6 +17,7 @@ import { SelectComponent } from "../../shared/select/select.component";
     TabsComponent,
     TabNameDirective,
     InputComponent,
+    ShineEffectDirective,
   ],
   templateUrl: "./settings.component.html",
   styleUrl: "./settings.component.scss",

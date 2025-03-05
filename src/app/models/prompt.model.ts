@@ -15,6 +15,7 @@ export interface Tool {
 }
 
 export interface Prompt {
+  id: string
   title: string;
   description: string;
   variables: Variable[];

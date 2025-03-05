@@ -1,64 +1,101 @@
-<div class="xl:p-4 p-1 h-full absolute inset-1 md:static z-10 drop-shadow-2xl" >
+<div class="xl:p-4 p-1 h-full absolute inset-1 md:static z-10 drop-shadow-2xl">
 
   <div [attr.data-opened]="sidenavService.opened()"
        class="transition-all h-full
-       duration-[300ms] bg-primary-4/50 drop-shadow-2xl flex
+       duration-500 bg-primary-4/50 drop-shadow-2xl flex
         flex-col gap-10 data-[opened=true]:w-80 w-16 rounded-xl p-2"
   >
     <div class="w-full flex items-center"
          [class.justify-center]="!sidenavService.opened()"
          [class.justify-end]="sidenavService.opened()">
 
-      <div
-        (click)="sidenavService.toggle()"
-        class="bg-primary-900 p-3 w-fit d-flex items-center justify-center cursor-pointer rounded-xl text-4xl flex transition-all select-none">
-        <span
-          [style]="{'transform': 'rotate('+(sidenavService.opened()?180:0)+'deg)'}"
-          class="material-icons-outlined"
-        >
-          {{ sidenavService.opened() ? 'chevron_right' : 'apps' }}
-        </span>
+      <!--      <div-->
+      <!--        (click)="sidenavService.toggle()"-->
+      <!--        class="bg-primary-900 p-3 w-fit d-flex items-center justify-center cursor-pointer rounded-xl text-4xl flex transition-all select-none">-->
+      <!--        <span class="material-icons-outlined">-->
+      <!--          {{ sidenavService.opened() ? 'chevron_left' : 'apps' }}-->
+      <!--        </span>-->
+      <!--      </div>-->
+      <div class="group relative w-16 h-16 perspective" [attr.data-opened]="sidenavService.opened()"
+           (click)="sidenavService.toggle()"
+      >
+        <div
+          class="absolute inset-0 flex items-center justify-center transition-transform  group-data-[opened=false]:rotate-y-180 backface-hidden">
+          <span class="material-icons text-4xl">chevron_left</span>
+        </div>
+
+        <div
+          class="absolute inset-0 flex items-center justify-center transition-transform  rotate-y-180 group-data-[opened=false]:rotate-y-0 backface-hidden">
+          <span class="material-icons text-4xl">apps</span>
+        </div>
       </div>
     </div>
     @if (authService.user()) {
       <div class="w-full flex flex-col items-center gap-2 transition-all">
-        <img
-          [src]="authService.user()?.photoURL"
-          [class.w-20]="sidenavService.opened()"
-          class="rounded-full w-12 aspect-square mx-auto"
-        />
+        <div class="size-20 pt-auto">
+          <img
+            [src]="authService.user()?.photoURL"
+            [class.w-20]="sidenavService.opened()"
+            [class.w-12]="!sidenavService.opened()"
+            class="transition-all rounded-full aspect-square mx-auto mt-auto"
+          />
+        </div>
 
         <span class="text-center text-2xl overflow-hidden w-full text-nowrap"
               [class.opacity-0]="!sidenavService.opened()"
         >
-            {{ authService.user()?.displayName }}
-          </span>
+          {{ authService.user()?.displayName }}
+        </span>
+        <div class="w-full flex items-center justify-center">
+
+          <div appShineEffect [gradientSize]="200"
+               class="rounded-xl w-full p-3 cursor-pointer flex items-center gap-5 overflow-hidden"
+               routerLink="">
+            <span class="material-icons-outlined text-4xl">home</span>
+            <!--            @if (sidenavService.opened()) {-->
+            <span class="text-nowrap flex-grow"> Home  </span>
+            <!--            }-->
+          </div>
+        </div>
+        <div class="w-full flex items-center justify-center">
+
+          <div appShineEffect [gradientSize]="200"
+               class="rounded-xl w-full p-3 cursor-pointer flex items-center gap-5 overflow-hidden"
+
+               routerLink="/settings">
+            <span class="material-icons-outlined text-4xl">settings</span>
+            <!--            @if (sidenavService.opened()) {-->
+            <span class="text-nowrap flex-grow"> Settings  </span>
+            <!--            }-->
+          </div>
+        </div>
       </div>
     }
-    <div
-      [attr.data-opened]="sidenavService.opened()"
-      class="flex-grow
+    @if (isPromptSectionEnabled) {
+      <div
+        [attr.data-opened]="sidenavService.opened()"
+        class="flex-grow
       hidden
       md:flex
       data-[opened=true]:flex
       w-full
       flex-col gap-2 justify-center items-center">
-      @for (item of sidenavService.items(); track item.name) {
-        <div class="w-full flex items-center justify-center">
+        @for (item of sidenavService.items(); track item.name) {
+          <div class="w-full flex items-center justify-center">
 
-          <div appShineEffect
-            class="rounded-xl shine bg-sky-900 w-full p-3 cursor-pointer flex items-center gap-5 overflow-hidden"
+            <div appShineEffect [gradientSize]="200"
+                 class="rounded-xl w-full p-3 cursor-pointer flex items-center gap-5 overflow-hidden"
+                [routerLink]="'/prompt/'+promptId+'/'+item.route">
 
-            [routerLink]="item.route">
-            <span class="material-icons-outlined text-4xl">{{ item.icon }}</span>
-<!--            @if (sidenavService.opened()) {-->
+              <span class="material-icons-outlined text-4xl">{{ item.icon }}</span>
               <span class="text-nowrap flex-grow"> {{ item.label }}  </span>
-<!--            }-->
+            </div>
           </div>
-        </div>
-      }
-    </div>
+        }
+      </div>
+    }
 
+    <div class="flex-grow"></div>
     <div class="flex items-center justify-center w-full">
       @if (!authService.user()) {
 
@@ -89,13 +126,15 @@
 
 
       } @else {
-        <button class="p-3 cursor-pointer flex items-center justify-center rounded-xl gap-1"
-                (click)="authService.signOut()"
+        <button
+          appShineEffect
+          class="w-full p-3 cursor-pointer flex items-center  rounded-xl gap-1"
+          (click)="authService.signOut()"
         >
+          <span class="material-icons-outlined">logout</span>
           @if (sidenavService.opened()) {
             <span class="">Logout</span>
           }
-          <span class="material-icons-outlined">logout</span>
         </button>
       }
     </div>

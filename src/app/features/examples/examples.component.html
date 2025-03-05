@@ -1,24 +1,24 @@
 <div class="flex w-full h-full flex-col items-center p-10 gap-4">
 
-  <div class="bg-sky-800 rounded-xl w-full flex flex-col gap-4 p-5 ">
+  <div class="bg-sky-800/30 rounded-xl w-full flex flex-col gap-4 p-5 ">
     <h1 class="text-center text-3xl">Examples</h1>
-    <button class="bg-sky-700 w-fit flex justify-center items-center
+    <button class=" w-fit flex justify-center items-center
            text-white         p-2           rounded-md" (click)="addExample()">
       <span class="material-icons">add</span>
     </button>
     @for (example of promptService.examples(); track $index) {
-      <div class="relative border-slate-50/30 border pt-5 p-3 rounded-xl flex flex-col gap-4">
-        <label class="absolute  -top-3 bg-sky-800 w-fit px-1 left-2">{{ example.name }}</label>
+      <div class="relative border-slate-50/30 border pt-1 p-3 rounded-xl flex flex-col gap-4">
+        <label class=" w-fit px-1 left-2">{{ example.name }}</label>
         <div class="flex gap-3">
           <app-input
-            class="bg-sky-800"
+            class=""
             [label]="'Name'"
             [(value)]="example.name"
             (valueChange)="emitUpdate()"
 
           ></app-input>
           <app-input
-            class="bg-sky-800 w-80"
+            class=" w-80"
             [label]="'Description'"
             [(value)]="example.description"
             (valueChange)="emitUpdate()"
@@ -27,7 +27,7 @@
         </div>
         <div class="min-h-32">
           <app-text-area
-            class="bg-sky-800 h-full"
+            class=" h-full"
             [label]="'Example Content'"
             (valueChange)="emitUpdate()"
             [(value)]="example.content"
@@ -36,8 +36,8 @@
 
         <div class="flex justify-end items-center">
 
-          <button
-            class="bg-sky-700 w-fit flex justify-center items-center  h-fit my-auto  text-white  p-2    rounded-md"
+          <button appShineEffect
+            class=" w-fit flex justify-center items-center  h-fit my-auto  text-white  p-2    rounded-md"
             (click)="deleteExample($index)">
             <span class="material-icons">delete</span>
           </button>

@@ -5,11 +5,12 @@ import { TextAreaComponent } from '../../shared/text-area/text-area.component';
 import { HttpClient } from '@angular/common/http';
 import { InputComponent } from '../../shared/input/input.component';
 import * as prompt from './improve-prompt.prompt'
+import {ShineEffectDirective} from '../../shared/directives/shine.directive';
 
 @Component({
   selector: "app-task-description",
   standalone: true,
-  imports: [FormsModule, TextAreaComponent, InputComponent,
+  imports: [FormsModule, TextAreaComponent, InputComponent, ShineEffectDirective,
   ],
   templateUrl: "./task-description.component.html",
   styleUrl: "./task-description.component.scss",
@@ -73,6 +74,12 @@ export class TaskDescriptionComponent{
       ...this.promptService.variables(),
       { name: "", description: "" },
     ]);
+  }
+
+  deleteVariable(index: number) {
+    this.promptService.variables.set(
+      this.promptService.variables().filter((_:any, i:number) => i !== index),
+    );
   }
 
   protected readonly prompt = prompt;
