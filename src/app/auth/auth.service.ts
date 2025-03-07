@@ -21,17 +21,17 @@ import {ToastService} from '../shared/toast/toast.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
+  protected auth = inject(Auth)
+  protected firestore = inject(Firestore)
+  protected router = inject(Router)
+  protected toastService = inject(ToastService)
+
   user$: BehaviorSubject<User | null | undefined> = new BehaviorSubject<User | null | undefined>(null)
   user = toSignal(this.user$)
-  auth = inject(Auth)
-  firestore = inject(Firestore)
-  router = inject(Router)
-  localStorageService = inject(LocalStorageService)
-  toastService = inject(ToastService)
 
   constructor() {
     this.user$.next(this.auth.currentUser)
-    onAuthStateChanged(this.auth, (user) => {
+    this.auth.onAuthStateChanged((user) => {
       if (user)
         this.user$.next(user as unknown as User)
     })

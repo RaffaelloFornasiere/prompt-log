@@ -9,45 +9,42 @@ import {
   docData,
   Firestore, setDoc,
 } from '@angular/fire/firestore';
-import {map, of} from 'rxjs';
+import {map, of, switchMap} from 'rxjs';
 import {Prompt} from '../models/prompt.model';
 import {DocumentData} from '@angular/fire/compat/firestore';
+import {StorageService} from '../core/storage/storage.service';
+import DiffMatchPatch from 'diff-match-patch';
+import {ToastService} from '../shared/toast/toast.service';
 
 @Injectable({providedIn: 'root'})
 export class PromptsService {
-  authService = inject(AuthService)
-
-  public firestore = inject(Firestore)
+  protected authService = inject(AuthService)
+  protected firestore = inject(Firestore)
+  protected storageService = inject(StorageService)
+  protected toastService = inject(ToastService)
 
   getPrompts() {
-    const user = this.authService.user()
-    if (!user) return of([])
-    const promptsCollections = collection(this.firestore, 'users', user.uid, 'prompts')
-    return collectionData(promptsCollections, {idField: 'id'})
-      .pipe(map((prompts: DocumentData[]) => prompts.map(prompt => ({...prompt as Prompt}))))
+    return this.storageService.getCollection('prompts')
   }
+
 
   newPrompt(prompt: any) {
-    const user = this.authService.user()
-    if (!user) return
-    const promptsCollections = collection(this.firestore, 'users', user.uid, 'prompts')
-    addDoc(promptsCollections, prompt).then((promptResponse) => {
-      const docId = promptResponse.id
-      const historyCollection = doc(this.firestore, 'users', user.uid, 'prompts', docId, 'history', new Date().toISOString())
-      setDoc(historyCollection, {title: prompt.title, description: prompt.description}).then(() => console.log('Prompt added'))
-    })
+    const dmp = new DiffMatchPatch();
+    const diff = Object.assign({}, dmp.diff_main('', JSON.stringify(prompt)));
+    this.storageService.addDocument(prompt, 'prompts')
+      .pipe(switchMap((prompt) => {
+        return this.storageService.setDocument(diff, Date.now().toString(), 'prompts', prompt.id, 'history')
+      })).subscribe()
   }
 
-  deletePrompt(prompt: any) {
-    const user = this.authService.user()
-    if (!user) return
-    const promptRef = doc(this.firestore, 'users', user.uid, 'prompts', prompt.id)
-    deleteDoc(promptRef).then(() => console.log('Prompt deleted'))
+  deletePrompt(promptId: any) {
+    this.storageService.deleteDocument('prompts', promptId)
+      .subscribe(() => {
+        this.toastService.addToast({message: 'Prompt deleted', type: 'success'})
+      })
   }
 
   getPrompt(promptId: string) {
-    const user = this.authService.user()
-    if (!user) return of(null)
-    return docData(doc(this.firestore, 'users', user.uid, 'prompts', promptId), {idField: 'id'})
+    this.storageService.getDocument('prompts', promptId)
   }
 }

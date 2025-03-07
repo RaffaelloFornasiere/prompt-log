@@ -48,6 +48,10 @@ export class LocalStorageService extends StorageService {
         return of(this.setSync(data, ...pathSegments));
     }
 
+    override setDocument(data: any, id: string, ...pathSegments: string[]): Observable<any> {
+        return of(this.setSync(data, ...pathSegments, id));
+    }
+
     deleteSync(...pathSegments: string[]): void {
         const path = pathSegments.slice(0, -1);
         const state = this.getState();

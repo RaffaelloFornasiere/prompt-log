@@ -23,14 +23,17 @@ export class DynamicStorageService implements StorageService, OnDestroy{
     });
   }
 
-  getDocument(path: string) { return this.currentService.getDocument(path); }
-  updateDocument(path: string, data: any) { return this.currentService.updateDocument(path, data); }
-  addDocument(path: string, data: any) { return this.currentService.addDocument(path, data); }
-  getCollection(path: string) { return this.currentService.getCollection(path); }
-  deleteDocument(path: string) { return this.currentService.deleteDocument(path); }
+  getDocument(...path: string[]) { return this.currentService.getDocument(...path); }
+  updateDocument(data: any, ...path: string[] ) { return this.currentService.updateDocument(data, ...path); }
+  addDocument( data: any, ...path: string[]) { return this.currentService.addDocument(data, ...path); }
+  getCollection(...path: string[]) { return this.currentService.getCollection(...path); }
+  deleteDocument(...path: string[]) { return this.currentService.deleteDocument(...path); }
+  setDocument(data: any, id: string, ...path:string[]) { return this.currentService.setDocument(data, id, ...path); }
 
 
-  ngOnDestroy() { this.authSub.unsubscribe(); }
+  ngOnDestroy() {
+    this.authSub.unsubscribe();
+  }
 
 
 }

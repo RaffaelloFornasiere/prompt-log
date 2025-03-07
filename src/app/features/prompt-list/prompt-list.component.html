@@ -6,10 +6,10 @@
 
     <div class="flex w-full justify-end">
 
-      <div appShineEffect class="p-3 rounded-xl w-fit flex items-center">
+      <div appShineEffect class="p-3 rounded-xl w-fit flex items-center cursor-pointer">
         <span class="material-icons">search</span>
       </div>
-      <div appShineEffect class="p-3 rounded-xl w-fit flex items-center"
+      <div appShineEffect class="p-3 rounded-xl w-fit flex items-center cursor-pointer"
            (click)="newPrompt()"
       >
         <span class="material-icons">add</span>
@@ -21,18 +21,20 @@
         <span>No prompts found</span>
       </div>
     } @else {
-      @for (prompt of prompts; track prompt.id) {
-        <div appShineEffect class="cursor-pointer hover:bg-white rounded-xl p-3 border border-gray-300/20 flex justify-between items-center"
-        [routerLink]="['prompt', prompt.id]"
+      @for (prompt of prompts; track $index) {
+        <div appShineEffect
+             class="cursor-pointer hover:bg-white rounded-xl p-3 border border-gray-300/20 flex justify-between items-center"
+             (click)="router.navigate(['prompt', prompt.id])"
         >
           <div>
             <span class="text-xl"> {{ prompt.title }}</span>
             <br>
             <span class="text-sm"> {{ prompt.description }}</span>
           </div>
-          <div class="cursor-pointer hover:bg-gray-300/20 rounded-xl p-3 flex items-center group">
+          <div class="cursor-pointer hover:bg-gray-300/20 rounded-xl p-3 flex items-center group"
+               (click)="deletePrompt(prompt); $event.stopImmediatePropagation()"
+          >
             <span class="transition-all material-icons  group-hover:scale-110"
-            (click)="promptsService.deletePrompt(prompt); $event.stopPropagation()"
             >delete</span>
           </div>
         </div>

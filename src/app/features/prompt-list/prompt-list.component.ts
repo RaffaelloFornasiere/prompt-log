@@ -5,7 +5,7 @@ import {Prompt} from '../../models/prompt.model';
 import {PromptsService} from '../../services/prompts.service';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {ShineEffectDirective} from '../../shared/directives/shine.directive';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 import {collection} from '@angular/fire/firestore';
@@ -20,14 +20,20 @@ import {collection} from '@angular/fire/firestore';
   templateUrl: './prompt-list.component.html',
   styleUrl: './prompt-list.component.scss'
 })
-export class PromptListComponent implements OnInit{
+export class PromptListComponent{
   protected promptsService = inject(PromptsService)
   protected prompts$!: Observable<Prompt[]>
+  protected router = inject(Router)
 
-  ngOnInit() {
+  constructor() {
     this.prompts$ = this.promptsService.getPrompts()
-    this.prompts$.subscribe(console.log)
   }
+
+  deletePrompt(prompt: Prompt){
+    console.log('delete prompt', prompt)
+    this.promptsService.deletePrompt(prompt.id)
+  }
+
 
   newPrompt(){
     const prompt = {title: 'New Prompt', description: 'Description'}
