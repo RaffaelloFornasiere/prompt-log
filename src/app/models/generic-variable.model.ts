@@ -1,32 +1,32 @@
 
 export type Variable = NumberVariable | StringVariable | BooleanVariable | ArrayVariable | ObjectVariable;
 
-export type NumberVariable = {
+export type BaseVariable = {
   name: string;
+  description: string;
+}
+
+export type NumberVariable = BaseVariable & {
   type: 'number';
-  value: number;
+  value: number | null;
 }
 
-export type StringVariable = {
-  name: string;
+export type StringVariable = BaseVariable & {
   type: 'string';
-  value: string;
+  value: string | null;
 }
 
-export type BooleanVariable = {
-  name: string;
+export type BooleanVariable =BaseVariable &  {
   type: 'boolean';
-  value: boolean;
+  value: boolean | null;
 }
 
-export type ArrayVariable = {
-  name: string;
+export type ArrayVariable = BaseVariable & {
   type: 'array';
-  value: Variable[];
+  value: Variable[] | null;
 }
 
-export type ObjectVariable = {
-  name: string;
+export type ObjectVariable = BaseVariable & {
   type: 'object';
-  value: { [key: string]: Variable };
+  value: { [key: string]: Variable } | null;
 }

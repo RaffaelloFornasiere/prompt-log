@@ -4,6 +4,7 @@ export interface Server {
   baseUrl: string;
   modelName: string;
   apiKey: string;
+  active: boolean;
 }
 
 export type Block = "task-description" | "examples" | "tools"

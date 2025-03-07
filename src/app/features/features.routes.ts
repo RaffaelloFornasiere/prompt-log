@@ -18,10 +18,16 @@ export const routes: Routes = [
       },
       {
         path: 'export',
+        resolve:{
+          prompt: promptResolve
+        },
         loadComponent: () => import('./export/export.component').then(m => m.ExportComponent)
       },
       {
         path: 'examples',
+        resolve:{
+          prompt: promptResolve
+        },
         loadComponent: () => import('./examples/examples.component').then(m => m.ExamplesComponent)
       },
       {
@@ -33,6 +39,9 @@ export const routes: Routes = [
       },
       {
         path: 'task-description',
+        resolve:{
+          prompt: promptResolve
+        },
         loadComponent: () => import('./task-description/task-description.component').then(m => m.TaskDescriptionComponent)
       }
     ]

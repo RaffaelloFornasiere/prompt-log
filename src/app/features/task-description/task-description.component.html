@@ -1,34 +1,42 @@
 <div class="flex w-full h-full flex-col items-center p-10 gap-4">
+  @if (prompt) {
 
-  <div class="bg-sky-800/30 rounded-xl w-full flex flex-col gap-4 p-5 ">
-    <h1 class="text-center text-3xl">Task Description</h1>
-    <div class=" rounded-xl p-3 flex flex-col h-full gap-3">
-      <div class="flex w-full gap-3">
-        <app-text-area
-          appShineEffect
-          class="min-h-96 w-1/2"
-          [label]="'Prompt Description'"
-        >
-        </app-text-area>
 
+    <div class="bg-sky-800/30 rounded-xl w-full flex flex-col gap-4 p-5 ">
+      <h1 class="text-center text-3xl">Task Description</h1>
+      <div class=" rounded-xl p-3 flex flex-col h-full gap-3">
+        <div class="flex w-full gap-3">
+          <app-text-area
+            appShineEffect
+            class="min-h-96 w-full"
+            [label]="'Prompt Description'"
+            [(value)]="prompt.description"
+          >
+          </app-text-area>
+
+        </div>
+
+        <button appShineEffect class="ring-2 ring-slate-400 rounded-xl p-2 w-fit" (click)="improveWithAI()"> Improve
+          with AI
+        </button>
+        <hr>
+        <span class="text-lg">Variables</span>
+        @for (variable of prompt.variables; track variable) {
+          <div class="flex gap-2">
+            <app-input class="w-1/2" [label]="'Name'" [(value)]="variable.name"></app-input>
+            <app-input class="w-1/2" [label]="'Description'" [(value)]="variable.description"></app-input>
+            <button appShineEffect class="ring-2 ring-slate-400 rounded-xl px-2 p-1 flex items-center"
+                    (click)="deleteVariable($index)">
+              <span class="material-icons">delete</span>
+            </button>
+          </div>
+        }
+        <button appShineEffect class="ring-2 mt-5 ring-slate-400 rounded-xl  flex items-center w-fit p-2"
+                (click)="addVariable()">
+          Add
+          <span class="material-icons">add</span>
+        </button>
       </div>
-
-      <button appShineEffect class="ring-2 ring-slate-400 rounded-xl p-2 w-fit" (click)="improveWithAI()"> Improve with AI</button>
-      <hr>
-      <span class="text-lg">Variables</span>
-<!--      @for (variable of promptService.variables(); track variable) {-->
-<!--        <div class="flex gap-2">-->
-<!--          <app-input class="w-1/2" [label]="'Name'" [(value)]="variable.name"></app-input>-->
-<!--          <app-input class="w-1/2" [label]="'Description'" [(value)]="variable.description"></app-input>-->
-<!--          <button appShineEffect class="ring-2 ring-slate-400 rounded-xl px-2 p-1 flex items-center" (click)="deleteVariable($index)">-->
-<!--            <span class="material-icons">delete</span>-->
-<!--          </button>-->
-<!--        </div>-->
-<!--      }-->
-      <button appShineEffect class="ring-2 mt-5 ring-slate-400 rounded-xl  flex items-center w-fit p-2" (click)="addVariable()">
-        Add
-        <span class="material-icons">add</span>
-      </button>
     </div>
-  </div>
+  }
 </div>

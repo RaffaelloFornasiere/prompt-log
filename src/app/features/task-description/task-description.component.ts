@@ -1,10 +1,16 @@
 import {AfterViewInit, Component, inject} from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { TextAreaComponent } from '../../shared/text-area/text-area.component';
-import { HttpClient } from '@angular/common/http';
-import { InputComponent } from '../../shared/input/input.component';
-import * as prompt from './improve-prompt.prompt'
+import {FormsModule} from '@angular/forms';
+import {TextAreaComponent} from '../../shared/text-area/text-area.component';
+import {HttpClient} from '@angular/common/http';
+import {InputComponent} from '../../shared/input/input.component';
 import {ShineEffectDirective} from '../../shared/directives/shine.directive';
+import {ActivatedRoute} from '@angular/router';
+import {Prompt} from '../../models/prompt.model';
+import prompt from './improve-prompt.prompt';
+import {ToastService} from '../../shared/toast/toast.service';
+import {StorageService} from '../../core/storage/storage.service';
+import {of, switchMap} from 'rxjs';
+import {UserSettings} from '../../models/user-settings.model';
 
 @Component({
   selector: "app-task-description",
@@ -14,71 +20,86 @@ import {ShineEffectDirective} from '../../shared/directives/shine.directive';
   templateUrl: "./task-description.component.html",
   styleUrl: "./task-description.component.scss",
 })
-export class TaskDescriptionComponent{
+export class TaskDescriptionComponent {
+  protected activatedRoute = inject(ActivatedRoute);
+  protected toastService = inject(ToastService);
+  protected storageService = inject(StorageService);
   protected http = inject(HttpClient);
+  prompt: Prompt | undefined = undefined;
+
+
+  constructor() {
+    this.activatedRoute.data.subscribe(({prompt}) => {
+      this.prompt = prompt;
+    });
+  }
 
 
   improveWithAI() {
-    // let user_message = prompt.default;
-    // user_message = user_message.replace(
-    //   "{{task_description}}",
-    //   this.promptService.taskDescription(),
-    // );
-    // let variablesText = "";
-    // if (
-    //   this.promptService.variables() &&
-    //   this.promptService.variables().length > 0
-    // ) {
-    //   this.promptService.variables().forEach((variable: any) => {
-    //     variablesText += `- ${variable.name}: ${variable.description}`;
-    //   });
-    // }
-    // user_message = user_message.replace("{{variables}}", variablesText);
-    //
-    // const messages = [{ role: "user", content: user_message }];
-    // const activeServer = this.promptService
-    //   .settings()
-    //   .servers.find((server: any) => server.active);
-    // this.http
-    //   .post(
-    //     activeServer.baseUrl + "/v1/chat/completions",
-    //     {
-    //       ...(activeServer.modelName ? { model: activeServer.modelName } : {}),
-    //       messages,
-    //     },
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${activeServer.apiKey}`,
-    //         "Content-Type": "application/json",
-    //       },
-    //     },
-    //   )
-    //   .subscribe((response: any) => {
-    //     // get the prompt between the <prompt> tags
-    //     console.log(response.choices[0].message.content);
-    //     const newPrompt = response.choices[0].message.content.match(
-    //       /<prompt>([\s\S]*?)<\/prompt>/,
-    //     )[1];
-    //     const improveSuggestions = response.choices[0].message.content.match(
-    //       /<improve>([\s\S]*?)<\/improve>/,
-    //     );
-    //     console.log(newPrompt);
-    //     // this.promptService.taskDescription.set(newPrompt);
-    //   });
+    if (!this.prompt?.description) {
+      this.toastService.addToast({message: 'Please enter a task description', type: 'warning'});
+      return;
+    }
+    let user_message = prompt;
+    user_message = user_message.replace(
+      "{{task_description}}",
+      this.prompt?.description,
+    );
+    let variablesText = "";
+    if (
+      this.prompt.variables &&
+      this.prompt.variables.length > 0
+    ) {
+      this.prompt.variables.forEach((variable: any) => {
+        variablesText += `- ${variable.name}: ${variable.description}`;
+      });
+    }
+    user_message = user_message.replace("{{variables}}", variablesText);
+
+    const messages = [{role: "user", content: user_message}];
+    this.storageService.getDocument('')
+      .pipe(
+        switchMap(({settings}: { settings: UserSettings }) => {
+          const activeServer = settings.servers.find((server) => server.active)!
+
+          return this.http
+            .post(
+              activeServer.baseUrl + "/v1/chat/completions",
+              {
+                ...(activeServer.modelName ? {model: activeServer.modelName} : {}),
+                messages,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${activeServer.apiKey}`,
+                },
+              },
+            )
+
+        })
+      ).subscribe((response: any) => {
+      const content = response.choices[0].message.content;
+      console.log(content);
+      let newPrompt = content.match(
+        /\n\s*<prompt>([\s\S]*?)<\/prompt>/,
+      )[1]
+
+      console.log(newPrompt);
+      const improveSuggestions = content.match(
+        /\n\s*<improvements>([\s\S]*?)<\/improvements>/,
+      )[1];
+      this.prompt!.description = newPrompt;
+    });
+
+
   }
 
   addVariable() {
-    // this.promptService.variables.set([
-    //   ...this.promptService.variables(),
-    //   { name: "", description: "" },
-    // ]);
+    this.prompt?.variables.push({name: "", description: "", type: "string", value: null});
   }
 
   deleteVariable(index: number) {
-    // this.promptService.variables.set(
-    //   this.promptService.variables().filter((_:any, i:number) => i !== index),
-    // );
+    this.prompt?.variables.splice(index, 1);
   }
 
-  protected readonly prompt = prompt;
 }

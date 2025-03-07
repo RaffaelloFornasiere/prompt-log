@@ -45,6 +45,6 @@ export class PromptsService {
   }
 
   getPrompt(promptId: string) {
-    this.storageService.getDocument('prompts', promptId)
+    return this.storageService.getDocument('prompts', promptId)
   }
 }

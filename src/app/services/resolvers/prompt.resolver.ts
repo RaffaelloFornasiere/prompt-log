@@ -10,9 +10,7 @@ const promptResolve = (route: ActivatedRouteSnapshot): Observable<any | undefine
   const promptService = inject(PromptsService);
   const promptId = route.params['promptId'];
   return authService.user$.pipe(
-    switchMap((user: any) => {
-      console.log('User', user);
-      if (!user) return of(null);
+    switchMap(() => {
       return promptService.getPrompt(promptId);
   }))
 };

@@ -21,10 +21,8 @@ export class PromptComponent {
 
 
   constructor() {
-    console.log('PromptComponent');
     this.activatedRoute.data.subscribe(({prompt}) => {
       this.prompt = prompt;
-      console.log('Prompt', prompt);
     });
   }
 
