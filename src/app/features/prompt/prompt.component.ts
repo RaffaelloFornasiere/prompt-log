@@ -1,11 +1,8 @@
 import {Component, inject, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {PromptService} from '../service/prompt.service';
 import {ToastService} from '../../shared/toast/toast.service';
 import {ActivatedRoute} from '@angular/router';
-import {PromptsService} from '../../services/prompts.service';
 import {Prompt} from '../../models/prompt.model';
-import {SettingsService} from '../../services/settings.service';
 
 @Component({
   selector: 'app-prompt',
@@ -19,7 +16,6 @@ import {SettingsService} from '../../services/settings.service';
 export class PromptComponent {
 
   toastService = inject(ToastService);
-  settingsService = inject(SettingsService);
   activatedRoute = inject(ActivatedRoute);
   prompt: Prompt | undefined = undefined;
 
@@ -33,7 +29,7 @@ export class PromptComponent {
   }
 
   buildDelimiterStart(sectionName: string) {
-    return (this.settingsService.settings()?.delimiter as any).start.replace('{sectionName}', sectionName);
+    return sectionName
   }
 
   buildDelimiterEnd(sectionName: string) {

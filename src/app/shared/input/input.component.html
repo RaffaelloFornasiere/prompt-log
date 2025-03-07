@@ -3,14 +3,16 @@
     <input
       #input
       [(ngModel)]="value"
-      type="text"
-      class="peer w-full bg-transparent h-10  rounded-lg  placeholder-transparent ring-2 px-2 pt-3 text-sm
-      ring-slate-400 focus:ring-slate-200 focus:outline-none focus:text-slate-200"
+      (ngModelChange)="setValue($event)"
+
+      [type]="type()"
+      class="peer w-full bg-transparent h-12  rounded-lg  placeholder-transparent border-2 px-2 pt-3 text-sm
+      border-slate-400 focus:border-slate-200 focus:outline-none focus:text-slate-200"
       placeholder="" />
     <label
       (click)="input.focus()"
-      class="absolute cursor-text left-0 top-0 text-xs text-slate-400 bg-inherit
+      class="absolute cursor-text left-0 top-0.5 text-xs text-slate-400 bg-inherit
     mx-1 px-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-slate-400 peer-placeholder-shown:top-1.5
-    peer-focus:-top-0 peer-focus:text-slate-200 peer-focus:text-xs transition-all">{{ label() }}</label>
+    peer-focus:top-0.5 peer-focus:text-slate-200 peer-focus:text-xs transition-all">{{ label() }}</label>
   </div>
 </div>

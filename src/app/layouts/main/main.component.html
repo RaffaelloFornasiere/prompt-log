@@ -1,7 +1,10 @@
-@if (!loading){
+@if (!loading) {
 
   <div class="h-full w-full flex">
-    <app-sidenav></app-sidenav>
+    @if (authenticated()) {
+      <app-sidenav></app-sidenav>
+
+    }
 
     <div class="flex-grow h-full pt-12 flex-column drop-shadow-2xl">
       <div
@@ -16,6 +19,6 @@
   <app-toast></app-toast>
 } @else {
   <div>
-loading
+    loading
   </div>
 }

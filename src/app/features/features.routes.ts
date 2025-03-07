@@ -1,5 +1,5 @@
 import {Routes} from '@angular/router';
-import promptResolve from '../services/resolvers/resolve.resolver';
+import promptResolve from '../services/resolvers/prompt.resolver';
 
 export const routes: Routes = [
   {
@@ -26,6 +26,9 @@ export const routes: Routes = [
       },
       {
         path: 'actions',
+        resolve:{
+          prompt: promptResolve
+        },
         loadComponent: () => import('./actions/actions.component').then(m => m.ActionsComponent)
       },
       {

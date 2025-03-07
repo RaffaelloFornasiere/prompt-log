@@ -1,4 +1,4 @@
-import {computed, effect, inject, Injectable} from '@angular/core';
+import {computed, effect, inject, Injectable, OnInit, signal} from '@angular/core';
 import {AuthService} from '../auth/auth.service';
 import {
   addDoc,
@@ -7,44 +7,47 @@ import {
   deleteDoc,
   doc,
   docData,
-  Firestore,
+  Firestore, setDoc,
 } from '@angular/fire/firestore';
-import { Observable, of, switchMap} from 'rxjs';
+import {map, of} from 'rxjs';
+import {Prompt} from '../models/prompt.model';
+import {DocumentData} from '@angular/fire/compat/firestore';
 
 @Injectable({providedIn: 'root'})
 export class PromptsService {
   authService = inject(AuthService)
-  firestore = inject(Firestore)
-  prompts$!: Observable<any[]>
-  user = this.authService.user
-  promptsCollections =
-    computed(() => collection(this.firestore, 'users', this.user()!.uid, 'prompts'))
 
-  constructor() {
-    const promptChanges = () => {
-      const user = this.user()
-      return user ? collectionData(this.promptsCollections(), { idField: 'id' }) : of([])
-    }
-    this.prompts$ = this.authService.user$.pipe(
-      switchMap(() => promptChanges()),
-    )
+  public firestore = inject(Firestore)
 
+  getPrompts() {
+    const user = this.authService.user()
+    if (!user) return of([])
+    const promptsCollections = collection(this.firestore, 'users', user.uid, 'prompts')
+    return collectionData(promptsCollections, {idField: 'id'})
+      .pipe(map((prompts: DocumentData[]) => prompts.map(prompt => ({...prompt as Prompt}))))
   }
 
-
   newPrompt(prompt: any) {
-    if (!this.user()) return
-    addDoc(this.promptsCollections(), prompt).then(() => console.log('Prompt added'))
+    const user = this.authService.user()
+    if (!user) return
+    const promptsCollections = collection(this.firestore, 'users', user.uid, 'prompts')
+    addDoc(promptsCollections, prompt).then((promptResponse) => {
+      const docId = promptResponse.id
+      const historyCollection = doc(this.firestore, 'users', user.uid, 'prompts', docId, 'history', new Date().toISOString())
+      setDoc(historyCollection, {title: prompt.title, description: prompt.description}).then(() => console.log('Prompt added'))
+    })
   }
 
   deletePrompt(prompt: any) {
-    if (!this.user()) return
-    console.log('Deleting prompt', prompt)
-    const promptRef = doc(this.firestore, 'users', this.user()!.uid, 'prompts', prompt.id)
+    const user = this.authService.user()
+    if (!user) return
+    const promptRef = doc(this.firestore, 'users', user.uid, 'prompts', prompt.id)
     deleteDoc(promptRef).then(() => console.log('Prompt deleted'))
   }
 
   getPrompt(promptId: string) {
-    return docData(doc(this.firestore, 'users', this.user()!.uid, 'prompts', promptId), {idField: 'id'})
+    const user = this.authService.user()
+    if (!user) return of(null)
+    return docData(doc(this.firestore, 'users', user.uid, 'prompts', promptId), {idField: 'id'})
   }
 }

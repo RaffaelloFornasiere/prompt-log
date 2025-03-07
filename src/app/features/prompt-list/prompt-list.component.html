@@ -10,17 +10,18 @@
         <span class="material-icons">search</span>
       </div>
       <div appShineEffect class="p-3 rounded-xl w-fit flex items-center"
-           (click)="promptsService.newPrompt({})"
+           (click)="newPrompt()"
       >
         <span class="material-icons">add</span>
       </div>
     </div>
-    @if (prompts()?.length === 0) {
+    @let prompts = prompts$ | async;
+    @if (!prompts || prompts?.length === 0) {
       <div class="alert alert-warning" id="no-result">
         <span>No prompts found</span>
       </div>
     } @else {
-      @for (prompt of prompts(); track prompt.id) {
+      @for (prompt of prompts; track prompt.id) {
         <div appShineEffect class="cursor-pointer hover:bg-white rounded-xl p-3 border border-gray-300/20 flex justify-between items-center"
         [routerLink]="['prompt', prompt.id]"
         >

@@ -2,9 +2,21 @@ import {computed, effect, inject, Injectable, signal} from '@angular/core';
 import {BehaviorSubject, map, Observable, of, Subject, switchMap, tap} from 'rxjs';
 import {Router} from '@angular/router';
 import {doc, Firestore, getDoc} from '@angular/fire/firestore';
-import {Auth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut, User} from '@angular/fire/auth';
+import {
+  Auth,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+  User,
+  UserCredential,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword
+} from '@angular/fire/auth';
 import {fromPromise} from 'rxjs/internal/observable/innerFrom';
 import {toSignal} from '@angular/core/rxjs-interop';
+import {LocalStorageService} from '../core/storage/local-storage.service';
+import {ToastService} from '../shared/toast/toast.service';
 
 
 @Injectable({providedIn: 'root'})
@@ -14,16 +26,40 @@ export class AuthService {
   auth = inject(Auth)
   firestore = inject(Firestore)
   router = inject(Router)
+  localStorageService = inject(LocalStorageService)
+  toastService = inject(ToastService)
 
   constructor() {
+    this.user$.next(this.auth.currentUser)
     onAuthStateChanged(this.auth, (user) => {
       if (user)
         this.user$.next(user as unknown as User)
     })
   }
 
-  getAuthState() {
-    return this.auth.authStateReady()
+  identity(user: UserCredential | null): void {
+    if (!user) return
+    this.user$.next(user.user as unknown as User)
+    this.toastService.addToast({message: 'Logged in successfully', type: 'success'})
+    this.router.navigate(['/']).then()
+  }
+
+  passwordSignIn(email: string, password: string) {
+    return fromPromise(signInWithEmailAndPassword(this.auth, email, password))
+      .pipe(
+        tap((result) => {
+          this.identity(result)
+        }));
+  }
+
+  passwordSignUp(email: string, password: string) {
+    return fromPromise(createUserWithEmailAndPassword(this.auth, email, password))
+      .pipe(
+        tap((result) => {
+            this.identity(result)
+          }
+        )
+      )
   }
 
 
@@ -32,16 +68,13 @@ export class AuthService {
     return fromPromise(signInWithPopup(this.auth, provider))
       .pipe(
         tap((result) => {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          const credential = GoogleAuthProvider.credentialFromResult(result)
-
-          // The signed-in user info.
-          this.user$.next(result.user as unknown as User)
-        }));
+          this.identity(result)
+        })).subscribe()
   }
 
-  async signOut() {
-    return fromPromise(signOut(this.auth)).pipe(tap(() => this.router.navigate(['/']).then()))
+  signOut() {
+    return fromPromise(signOut(this.auth))
+      .pipe(tap(() => this.user$.next(null)))
   }
 
 

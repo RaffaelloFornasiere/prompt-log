@@ -23,8 +23,6 @@ export class SidenavComponent {
   sidenavService = inject(SidenavService)
   authService = inject(AuthService)
 
-  settingsService = inject(SettingsService)
-  promptService = inject(PromptsService)
   router = inject(Router)
 
   isPromptSectionEnabled = false;
@@ -51,8 +49,13 @@ export class SidenavComponent {
     }
 
     route.params.subscribe(params => {
-      console.log(params);
       this.promptId = params['promptId'] || null;
+    });
+  }
+
+  signOut() {
+    this.authService.signOut().subscribe(() => {
+      this.router.navigate(['/login']).then();
     });
   }
 }

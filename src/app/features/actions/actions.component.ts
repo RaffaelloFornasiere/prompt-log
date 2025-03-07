@@ -3,8 +3,9 @@ import { FormsModule } from "@angular/forms";
 import { InputComponent } from "../../shared/input/input.component";
 import { KeyValuePipe } from "@angular/common";
 import { SelectComponent } from "../../shared/select/select.component";
-import { PromptService } from "../service/prompt.service";
 import {ShineEffectDirective} from '../../shared/directives/shine.directive';
+import {Prompt} from '../../models/prompt.model';
+import {ActivatedRoute} from '@angular/router';
 
 export type PropertyType =
   | "object"
@@ -70,12 +71,13 @@ export type ViewToolType = Omit<ToolType, "input_schema" | "output"> & {
   styleUrl: "./actions.component.scss",
 })
 export class ActionsComponent implements OnDestroy {
-  protected promptService = inject(PromptService);
+  prompt : Prompt | undefined = undefined;
+  activatedRoute = inject(ActivatedRoute);
 
   ngOnDestroy() {
-    this.promptService.actions.set(
-      this.actions.map(this.viewToolTypeToToolType.bind(this)),
-    );
+    // this.promptService.actions.set(
+    //   this.actions.map(this.viewToolTypeToToolType.bind(this)),
+    // );
   }
 
   actions: ViewToolType[] = [
@@ -155,11 +157,15 @@ export class ActionsComponent implements OnDestroy {
   }
 
   constructor() {
-    effect(() => {
-      this.actions = this.promptService
-        .actions()
-        .map((a) => this.toolTypeToViewToolType(a));
-    });
+    this.activatedRoute.data.subscribe(({prompt}) => {
+      this.prompt = prompt;
+      console.log('Prompt', prompt);
+    })
+    // effect(() => {
+    //   this.actions = this.promptService
+    //     .actions()
+    //     .map((a) => this.toolTypeToViewToolType(a));
+    // });
   }
 
   deleteAction(index: number) {
@@ -182,9 +188,9 @@ export class ActionsComponent implements OnDestroy {
     });
   }
   updateActions(){
-    this.promptService.actions.set(
-      [...this.actions.map(this.viewToolTypeToToolType.bind(this))],
-    );
+    // this.promptService.actions.set(
+    //   [...this.actions.map(this.viewToolTypeToToolType.bind(this))],
+    // );
   }
 
   addAction() {
