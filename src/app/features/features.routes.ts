@@ -31,11 +31,11 @@ export const routes: Routes = [
         loadComponent: () => import('./examples/examples.component').then(m => m.ExamplesComponent)
       },
       {
-        path: 'actions',
+        path: 'tools',
         resolve:{
           prompt: promptResolve
         },
-        loadComponent: () => import('./actions/actions.component').then(m => m.ActionsComponent)
+        loadComponent: () => import('./tools/tools.component').then(m => m.ToolsComponent)
       },
       {
         path: 'task-description',

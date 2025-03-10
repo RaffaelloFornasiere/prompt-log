@@ -1,0 +1,143 @@
+<div class="flex w-full h-full flex-col items-center xl:p-10 p-2 gap-4">
+
+  <div class="bg-sky-800/30 rounded-xl w-full flex flex-col gap-4 p-5 ">
+    <h1 class="text-center text-3xl bg-2">Tools</h1>
+    @if ((prompt?.tools?.length ?? 0) > 0) {
+      @for (tool of tools(); track tool.name; let toolIndex = $index) {
+        <div class=" border-slate-50/30 border rounded-xl gap-3 p-5 flex flex-col  focus-within:border-white">
+
+          <div class="flex justify-between w-full">
+
+            <label class=" w-fit text-2xl px-1 left-2 focus-within:text-white">{{ tool.name?tool.name:'Tool Name' }}</label>
+            <div class="h-full flex flex-col justify-start items-center">
+              <button
+                appShineEffect
+                class="w-fit flex justify-center items-center ext-white p-2 rounded-md"
+                (click)="deleteTool(toolIndex)">
+                <span class="material-icons">delete</span>
+              </button>
+            </div>
+          </div>
+          <div class="flex-grow flex flex-col gap-4">
+            <div class="flex justify-start items-center gap-3">
+              <app-input
+                class=""
+                [label]="'Name'"
+                [(value)]="tool.name"
+              ></app-input>
+              <app-input
+                class="flex-grow"
+                [label]="'Description'"
+                [(value)]="tool.description"
+              ></app-input>
+            </div>
+            <div>
+
+              <div class="flex items-center gap-2 justify-between mt-5 ">
+
+                <label class=" w-fit px-1 text-lg">Input Schema</label>
+                <button appShineEffect class="w-fit flex justify-center items-center p-2 rounded-md"
+                        (click)="addInput(tool)">
+                  Add Input Parameter
+                  <span class="material-icons">add</span>
+                </button>
+              </div>
+              @for (input of tool.inputSchema.properties; track $index) {
+                <div class="relative border-slate-50/30 border pt-1 p-3 rounded-xl  focus-within:border-white">
+                  <label class="w-fit px-1 left-2 focus-within:text-white">{{ input.name }}</label>
+                  <div class="flex justify-between">
+
+                    <div class="flex justify-start items-center gap-3">
+                      <app-input
+                        class=""
+                        [label]="'Name'"
+                        [(value)]="input.name"
+                      ></app-input>
+                      <app-input
+                        class=" w-80"
+                        [label]="'Description'"
+                        [(value)]="input.description"
+                      ></app-input>
+                      <app-select
+                        [(value)]="input.type"
+                        class="min-w-40 "
+                        [items]="inputTypes"
+                        [label]="'Input Type'"
+                      >
+                      </app-select>
+                    </div>
+                    <button
+                      appShineEffect
+                      class=" w-fit flex justify-center items-center  h-fit my-auto  text-white  p-2    rounded-md"
+                      (click)="deleteInputProperty(toolIndex, $index)">
+                      <span class="material-icons">delete</span>
+                    </button>
+                  </div>
+
+                </div>
+              }
+            </div>
+
+            <div>
+              <div class="flex items-center gap-2 mt-5">
+
+                <label class=" w-fit px-1 text-lg">Output Schema</label>
+                <!--              <button appShineEffect class="border w-fit flex justify-center items-center text-white p-2 rounded-md"-->
+                <!--                      (click)="addOutput(tool)">-->
+                <!--                Add Output Parameter-->
+                <!--                <span class="material-icons">add</span>-->
+                <!--              </button>-->
+              </div>
+
+              @for (output of tool.output.properties; track $index) {
+                <div class="relative  border pt-1 p-3 rounded-xl focus-within:border-white">
+                  <label class="w-fit px-1 left-2 focus-within:text-white">{{ output.name }}</label>
+                  <div class="flex justify-between">
+
+                    <div class="flex justify-start items-center gap-3">
+                      <app-input
+                        class=""
+                        [label]="'Name'"
+                        [(value)]="output.name"
+                      ></app-input>
+                      <app-input
+                        class=" w-80"
+                        [label]="'Description'"
+                        [(value)]="output.description"
+                      ></app-input>
+                      <app-select
+                        [(value)]="output.type"
+                        class="min-w-40 "
+                        [items]="inputTypes"
+                        [label]="'Output Type'"
+                      >
+                      </app-select>
+                    </div>
+                    <button
+                      appShineEffect
+                      class=" w-fit flex justify-center items-center  h-fit my-auto  text-white  p-2    rounded-md"
+                      (click)="deleteOutputProperty(toolIndex, $index)">
+                      <span class="material-icons">delete</span>
+                    </button>
+                  </div>
+
+                </div>
+              }
+            </div>
+
+          </div>
+
+        </div>
+      }
+    }
+    <button
+      appShineEffect
+      (click)="addTool()" class=" w-fit flex justify-center items-center
+     text-white p-2 rounded-md">
+      <span class="material-icons">add</span>
+    </button>
+  </div>
+</div>
+
+
+

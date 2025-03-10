@@ -8,9 +8,9 @@ export const sidenavItems: SidenavItem [] = [
     icon: 'task'
   },
   {
-    name: 'Actions',
-    label: 'Actions',
-    route: 'actions',
+    name: 'Tools',
+    label: 'Tools',
+    route: 'tools',
     icon: 'app_registration'
   },
   {

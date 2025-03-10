@@ -17,9 +17,6 @@ export type Example = {
   standalone: true,
   imports: [
     FormsModule,
-    InputComponent,
-    TextAreaComponent,
-    ShineEffectDirective
   ],
   templateUrl: './examples.component.html',
   styleUrl: './examples.component.scss',

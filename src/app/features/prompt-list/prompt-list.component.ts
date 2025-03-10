@@ -14,7 +14,6 @@ import {collection} from '@angular/fire/firestore';
   selector: 'app-prompt-list',
   imports: [
     ShineEffectDirective,
-    RouterLink,
     AsyncPipe
   ],
   templateUrl: './prompt-list.component.html',
