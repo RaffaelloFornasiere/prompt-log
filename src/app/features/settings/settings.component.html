@@ -2,115 +2,122 @@
 
   <div class="bg-primary-4/50 rounded-xl w-full flex flex-col gap-4 p-5 ">
     <h1 class="text-center text-3xl">Settings</h1>
-    <app-tabs [activeTab]="'Prompt Settings'" class="p-4 rounded-xl">
-      <div *appTab="'Prompt Settings'" class="flex flex-col gap-4">
-<!--        <div class="flex flex-col gap-4">-->
-<!--          <span>Sections Delimiter</span>-->
-<!--          <div class="rounded-xl overflow-hidden flex w-fit ">-->
-<!--            <button appShineEffect class="p-2  data-[checked=true]:bg-sky-800 border border-slate-400/70 border-r-0 rounded-l-xl"-->
-<!--                    [attr.data-checked]="delimiter == 'line'"-->
-<!--                    (click)="setDelimiter('line')"-->
-<!--            >Line-->
-<!--            </button>-->
-<!--            <button appShineEffect class="p-2 data-[checked=true]:bg-white/30 border-x border-slate-400/70 border"-->
-<!--                    [attr.data-checked]="delimiter == 'xml'"-->
-<!--                    (click)="setDelimiter('xml')"-->
-<!--            >Xml-->
-<!--            </button>-->
-<!--            <button appShineEffect class="p-2  data-[checked=true]:bg-sky-800 border border-slate-400/70 border-l-0 rounded-r-xl"-->
-<!--                    [attr.data-checked]="delimiter == 'custom'"-->
-<!--                    (click)="setDelimiter('custom')"-->
-<!--            >Custom-->
-<!--            </button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="flex flex-col gap-2">-->
-<!--          <span>Do you want the model to impersonate someone?</span>-->
+    @if (settings) {
+      <app-tabs [activeTab]="'API'" class="p-4 rounded-xl">
+        <div *appTab="'Prompt Settings'" class="flex flex-col gap-4">
+          <div class="flex flex-col gap-4">
+            <span>Sections Delimiter</span>
+            @if (settings.delimiter) {
 
-<!--          <div class=" overflow-hidden flex justify-start items-center w-full gap-2">-->
+              <div class="rounded-xl overflow-hidden flex w-fit ">
+                <button appShineEffect
+                        class="p-2  data-[checked=true]:bg-sky-800 border border-slate-400/70 border-r-0 rounded-l-xl"
+                        [attr.data-checked]="settings.delimiter.name == 'line'"
+                        (click)="setDelimiter('line')"
+                >Line
+                </button>
+                <button appShineEffect class="p-2 data-[checked=true]:bg-white/30 border-x border-slate-400/70 border"
+                        [attr.data-checked]="settings.delimiter.name == 'xml'"
+                        (click)="setDelimiter('xml')"
+                >Xml
+                </button>
+                <button appShineEffect
+                        class="p-2  data-[checked=true]:bg-sky-800 border border-slate-400/70 border-l-0 rounded-r-xl"
+                        [attr.data-checked]="settings.delimiter.name == 'custom'"
+                        (click)="setDelimiter('custom')"
+                >Custom
+                </button>
+              </div>
+            }
+          </div>
+          <div class="flex flex-col gap-2">
+            <span>Do you want the model to impersonate someone?</span>
 
-<!--            <div class="relative inline-block w-11 h-5 my-2">-->
-<!--              <input checked id="switch-component" #checkbox type="checkbox"-->
-<!--                     (click)="impersonate = checkbox.checked?impersonate??'':null"-->
-<!--                     class="peer appearance-none w-11 h-5 bg-sky-800 rounded-full checked:bg-sky-800 cursor-pointer transition-colors duration-300"/>-->
-<!--              <label for="switch-component" class="absolute top-0 left-0 w-5 h-5 bg-sky-900 rounded-full border border-sky-700-->
-<!--            shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-sky-700 cursor-pointer">-->
-<!--              </label>-->
-<!--            </div>-->
-<!--            {{ impersonate != null ? 'Yes' : 'No' }}-->
-<!--            <div class="flex-grow">-->
+            <div class=" overflow-hidden flex justify-start items-center w-full gap-2">
 
-<!--              <input type="text"-->
-<!--                     [class.invisible]="impersonate == null"-->
-<!--                     placeholder="Describe here the person you want to impersonate"-->
-<!--                     class="rounded-xl w-full outline-none bg-sky-900 p-2" [(ngModel)]="impersonate">-->
-<!--            </div>-->
+              <div class="relative inline-block w-11 h-5 my-2">
+                <input checked id="switch-component" #checkbox type="checkbox"
+                       (click)="settings.impersonate = checkbox.checked?settings.impersonate??'':null"
+                       class="peer appearance-none w-11 h-5 bg-sky-800 rounded-full checked:bg-sky-800 cursor-pointer transition-colors duration-300"/>
+                <label for="switch-component" class="absolute top-0 left-0 w-5 h-5 bg-sky-900 rounded-full border border-sky-700
+            shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-sky-700 cursor-pointer">
+                </label>
+              </div>
+              {{ settings.impersonate != null ? 'Yes' : 'No' }}
+              <div class="flex-grow">
 
-<!--          </div>-->
-<!--        </div>-->
-      </div>
-      <div *appTab="'API'" class="gap-4 flex flex-col py-3">
-<!--        <div class="flex items-center gap-2">-->
+                <input type="text"
+                       [class.invisible]="settings.impersonate == null"
+                       placeholder="Describe here the person you want to impersonate"
+                       class="rounded-xl w-full outline-none bg-sky-900 p-2" [(ngModel)]="settings.impersonate">
+              </div>
 
-<!--          <button class="bg-sky-700 w-fit flex justify-center items-center text-white p-2 rounded-md"-->
-<!--                  (click)="addServer()">-->
-<!--            Add Server-->
-<!--            <span class="material-icons">add</span>-->
-<!--          </button>-->
-<!--        </div>-->
-<!--        @for (server of settings.servers; track server) {-->
-<!--          <div class="relative bg-sky-800 border-slate-50/30 border pt-5 p-5 rounded-xl">-->
-<!--            <label class="absolute  -top-3 bg-sky-800 w-fit px-1 left-2">{{ server.baseUrl }}</label>-->
-<!--            <div class="flex justify-between mt-3">-->
-<!--              <div class="flex justify-start items-center gap-3">-->
-<!--                Active Server:-->
-<!--                <div class="relative inline-block w-11 h-5 my-2">-->
-<!--                  <input [checked]="server.active" #checkbox type="checkbox"-->
-<!--                         (click)="checkbox.checked?toggleActiveServer($index, checkbox.checked):''"-->
-<!--                         class="peer appearance-none w-11 h-5 bg-sky-700 rounded-full checked:bg-sky-700 cursor-pointer transition-colors duration-300"/>-->
-<!--                  <label class="absolute top-0 left-0 w-5 h-5 bg-sky-900 rounded-full border border-sky-700-->
-<!--            shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-sky-700 cursor-pointer">-->
-<!--                  </label>-->
-<!--                </div>-->
-<!--                <app-input-->
-<!--                  class="bg-sky-800"-->
-<!--                  [label]="'Base Url'"-->
-<!--                  [(value)]="server.baseUrl"-->
-<!--                  (valueChange)="updateServers()"-->
-<!--                ></app-input>-->
-<!--                <app-input-->
-<!--                  class="bg-sky-800 w-80"-->
-<!--                  [label]="'Model name'"-->
-<!--                  [(value)]="server.modelName"-->
-<!--                  (valueChange)="updateServers()"-->
+            </div>
+          </div>
+        </div>
+        <div *appTab="'API'" class="gap-4 flex flex-col py-3">
+          <div class="flex items-center gap-2">
 
-<!--                ></app-input>-->
-<!--                <app-input-->
-<!--                  class="bg-sky-800 w-80"-->
-<!--                  [label]="'Api Key'"-->
-<!--                  [(value)]="server.apiKey"-->
-<!--                  (valueChange)="updateServers()"-->
+            <button
+              appShineEffect
+              class=" w-fit flex justify-center items-center text-white p-2 rounded-md"
+              (click)="addServer()">
+              Add Server
+              <span class="material-icons">add</span>
+            </button>
+          </div>
+          @for (server of settings.servers; track server) {
+            <div class="relative  border-slate-50/30 border pt-5 p-5 rounded-xl">
+              <label class="absolute  -top-3 bg-sky-800 w-fit px-1 left-2">{{ server.baseUrl }}</label>
+              <div class="flex justify-between mt-3">
+                <div class="flex justify-start items-center gap-3">
+                  Active Server:
+                  <div class="relative inline-block w-11 h-5 my-2">
+                    <input [checked]="server.active" #checkbox type="checkbox"
+                           (click)="checkbox.checked?toggleActiveServer($index, checkbox.checked):''"
+                           class="peer appearance-none w-11 h-5 bg-sky-700 rounded-full checked:bg-sky-700 cursor-pointer transition-colors duration-300"/>
+                    <label class="absolute top-0 left-0 w-5 h-5 bg-sky-900 rounded-full border border-sky-700
+                      shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-sky-700 cursor-pointer">
+                    </label>
+                  </div>
+                  <app-input
+                    class=""
+                    [label]="'Base Url'"
+                    [(value)]="server.baseUrl"
+                  ></app-input>
+                  <app-input
+                    class=" w-80"
+                    [label]="'Model name'"
+                    [(value)]="server.modelName"
 
-<!--                ></app-input>-->
-<!--              </div>-->
-<!--              <button-->
-<!--                class="bg-sky-700 w-fit flex justify-center items-center  h-fit my-auto  text-white  p-2    rounded-md"-->
-<!--                (click)="deleteServer($index)">-->
-<!--                <span class="material-icons">delete</span>-->
-<!--              </button>-->
-<!--            </div>-->
+                  ></app-input>
+                  <app-input
+                    class=" w-80"
+                    [label]="'Api Key'"
+                    [(value)]="server.apiKey"
 
-<!--          </div>-->
-<!--        }-->
-<!--        <div class="mt-5">-->
+                  ></app-input>
+                </div>
+                <button
+                  appShineEffect
+                  class=" w-fit flex justify-center items-center  h-fit my-auto  text-white  p-2    rounded-md"
+                  (click)="deleteServer($index)">
+                  <span class="material-icons">delete</span>
+                </button>
+              </div>
 
-<!--          If you don't have any llm server you can check some free options-->
-<!--          <a href="https://github.com/cheahjs/free-llm-api-resources" class="text-slate-700 font-bold">here</a>-->
-<!--        </div>-->
-      </div>
+            </div>
+          }
+          <div class="mt-5">
+
+            If you don't have any llm server you can check some free options
+            <a href="https://github.com/cheahjs/free-llm-api-resources" class="text-slate-700 font-bold">here</a>
+          </div>
+        </div>
 
 
-    </app-tabs>
+      </app-tabs>
+    }
 
   </div>
 </div>

@@ -1,7 +1,6 @@
 import {computed, effect, inject, Injectable, signal} from '@angular/core';
 import {BehaviorSubject, map, Observable, of, Subject, switchMap, tap} from 'rxjs';
 import {Router} from '@angular/router';
-import {doc, Firestore, getDoc} from '@angular/fire/firestore';
 import {
   Auth,
   GoogleAuthProvider,
@@ -17,15 +16,17 @@ import {fromPromise} from 'rxjs/internal/observable/innerFrom';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {LocalStorageService} from '../core/storage/local-storage.service';
 import {ToastService} from '../shared/toast/toast.service';
+import {UserSettings} from '../models/user-settings.model';
+import {StorageService} from '../core/storage/storage.service';
+import {addDoc, collection, doc, Firestore, setDoc} from '@angular/fire/firestore';
 
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
   protected auth = inject(Auth)
-  protected firestore = inject(Firestore)
   protected router = inject(Router)
   protected toastService = inject(ToastService)
-
+  protected firestore = inject(Firestore)
   user$: BehaviorSubject<User | null | undefined> = new BehaviorSubject<User | null | undefined>(null)
   user = toSignal(this.user$)
 
@@ -56,10 +57,26 @@ export class AuthService {
     return fromPromise(createUserWithEmailAndPassword(this.auth, email, password))
       .pipe(
         tap((result) => {
-            this.identity(result)
+            this.createUserSettings(result).then(() => {
+              this.identity(result)
+            })
           }
         )
       )
+  }
+
+  createUserSettings(user: UserCredential) {
+    const userSettings: UserSettings = {
+      delimiter: {
+        start: '<{sectionName}>',
+        end: '</{sectionName}>',
+        name: 'xml'
+      },
+      impersonate: null,
+      servers: [],
+    }
+    const docRef = doc(this.firestore, 'users', user.user.uid)
+    return setDoc(docRef, userSettings)
   }
 
 

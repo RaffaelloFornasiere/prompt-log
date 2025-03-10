@@ -10,8 +10,12 @@ export interface Server {
 export type Block = "task-description" | "examples" | "tools"
 
 export interface UserSettings{
-  delimiter: string;
+  delimiter: {
+    start: string;
+    end: string;
+    name: string;
+  };
   impersonate: string | null;
   servers: Server[];
-  blocksOrder: [Block, Block, Block];
+  blocksOrder?: [Block, Block, Block];
 }
