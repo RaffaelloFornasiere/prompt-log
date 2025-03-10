@@ -40,7 +40,7 @@ export class ToolsComponent implements OnDestroy {
     this.activatedRoute.data.subscribe(({prompt}) => {
       this.prompt = prompt;
       if (this.prompt) {
-        this.tools.set(this.prompt.tools.map(this.toViewToolType.bind(this)));
+        this.tools.set(this.prompt.tools?.map(this.toViewToolType.bind(this)) ?? []);
       }
     });
   }
@@ -94,6 +94,7 @@ export class ToolsComponent implements OnDestroy {
 
 
   addTool() {
+    console.log('Adding tool');
     this.tools.update((tools) => {
       tools.push({
         name: "",

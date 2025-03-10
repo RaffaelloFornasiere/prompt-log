@@ -30,7 +30,7 @@ export class ExamplesComponent implements OnDestroy{
 
   constructor() {
     this.activatedRoute.data.subscribe(({prompt}) => {
-      this.examples.set(prompt.examples);
+      this.examples.set(prompt.examples ?? []);
       this.prompt = prompt;
     });
   }

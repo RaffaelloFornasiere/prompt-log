@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, inject} from '@angular/core';
+import {AfterViewInit, Component, inject, OnDestroy} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {TextAreaComponent} from '../../shared/text-area/text-area.component';
 import {HttpClient} from '@angular/common/http';
@@ -20,7 +20,7 @@ import {UserSettings} from '../../models/user-settings.model';
   templateUrl: "./task-description.component.html",
   styleUrl: "./task-description.component.scss",
 })
-export class TaskDescriptionComponent {
+export class TaskDescriptionComponent implements OnDestroy{
   protected activatedRoute = inject(ActivatedRoute);
   protected toastService = inject(ToastService);
   protected storageService = inject(StorageService);
@@ -34,6 +34,10 @@ export class TaskDescriptionComponent {
     });
   }
 
+
+  ngOnDestroy() {
+    this.storageService.updateDocument(this.prompt, 'prompts', this.prompt!.id);
+  }
 
   improveWithAI() {
     if (!this.prompt?.description) {

@@ -89,6 +89,6 @@ export class LoginComponent {
     if (this.form.invalid) {
       return
     }
-    this.authService.passwordSignIn(this.form.controls.username.value!, this.form.controls.password.value!)
+    this.authService.passwordSignIn(this.form.controls.username.value!, this.form.controls.password.value!).subscribe()
   }
 }

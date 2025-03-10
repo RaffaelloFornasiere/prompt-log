@@ -12,7 +12,6 @@ type ModifiablePrompt = Prompt & { modified: boolean }
   selector: 'app-prompt-list',
   imports: [
     ShineEffectDirective,
-    AsyncPipe
   ],
   templateUrl: './prompt-list.component.html',
   styleUrl: './prompt-list.component.scss'
@@ -21,7 +20,6 @@ export class PromptListComponent implements OnDestroy {
   protected promptsService = inject(PromptsService)
   protected prompts: ModifiablePrompt[] = []
   protected router = inject(Router)
-  protected activatedRoute = inject(ActivatedRoute)
   editing:string | null = null
 
   ngOnDestroy() {

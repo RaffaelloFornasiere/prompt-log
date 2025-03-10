@@ -31,13 +31,13 @@
               class="text-xl outline-none group-data-[editing=true]:p-2 group-data-[editing=true]:bg-white/20 rounded-xl"
               [contentEditable]="editing === prompt.id"
               (focusout)="editTitle(prompt, $event)"
-              (click)="$event.stopImmediatePropagation()"
+              (click)="editing === prompt.id?$event.stopImmediatePropagation():null"
             > {{ prompt.title }}</span>
 
             <span class="text-sm outline-none group-data-[editing=true]:p-2 group-data-[editing=true]:bg-white/20 rounded-xl"
                   [contentEditable]="editing === prompt.id"
                   (focusout)="editDescription(prompt, $event)"
-                  (click)="$event.stopImmediatePropagation()"
+                  (click)="editing === prompt.id?$event.stopImmediatePropagation():null"
             > {{ prompt.description }}</span>
           </div>
 
