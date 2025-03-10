@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import {Component, inject, OnDestroy} from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import {
   TabNameDirective,
@@ -22,7 +22,7 @@ import {InputComponent} from '../../shared/input/input.component';
   templateUrl: "./settings.component.html",
   styleUrl: "./settings.component.scss",
 })
-export class SettingsComponent {
+export class SettingsComponent implements OnDestroy{
   settings : UserSettings | undefined = undefined;
   storageService = inject(StorageService);
 
@@ -31,6 +31,10 @@ export class SettingsComponent {
       this.settings = userSettings.settings;
       console.log(this.settings);
     });
+  }
+
+  ngOnDestroy() {
+    this.storageService.updateDocument({settings: this.settings});
   }
 
   delimiters = {
