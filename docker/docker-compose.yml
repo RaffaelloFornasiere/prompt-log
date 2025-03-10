@@ -1,0 +1,9 @@
+name: prompt-generator
+
+services:
+  angular-app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "9874:80"
