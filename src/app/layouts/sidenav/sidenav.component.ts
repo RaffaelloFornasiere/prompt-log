@@ -1,4 +1,4 @@
-import {Component, computed, inject} from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import {SidenavService} from './sidenav.service';
 import {ActivatedRoute, NavigationEnd, Router, RouterLink} from '@angular/router';
 import {AuthService} from '../../auth/auth.service';
@@ -32,7 +32,7 @@ export class SidenavComponent {
   constructor() {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
+      .subscribe((event) => {
         this.isPromptSectionEnabled = this.router.url.includes('prompt/');
         if (this.isPromptSectionEnabled)
           this.getPromptId();

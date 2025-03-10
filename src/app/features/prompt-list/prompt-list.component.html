@@ -15,27 +15,54 @@
         <span class="material-icons">add</span>
       </div>
     </div>
-    @let prompts = prompts$ | async;
-    @if (!prompts || prompts?.length === 0) {
+    @if (prompts.length === 0) {
       <div class="alert alert-warning" id="no-result">
         <span>No prompts found</span>
       </div>
     } @else {
       @for (prompt of prompts; track $index) {
         <div appShineEffect
-             class="cursor-pointer hover:bg-white rounded-xl p-3 border border-gray-300/20 flex justify-between items-center"
-             (click)="router.navigate(['prompt', prompt.id])"
+             class="cursor-pointer rounded-xl p-3 border border-gray-300/20 flex justify-between items-center"
+             (click)="editing === prompt.id?editing= null:router.navigate(['prompt', prompt.id])"
         >
-          <div>
-            <span class="text-xl"> {{ prompt.title }}</span>
-            <br>
-            <span class="text-sm"> {{ prompt.description }}</span>
+          <div class="flex flex-col focus-within:gap-2 gap-1 w-fit group"
+               [attr.data-editing]="editing === prompt.id">
+            <span
+              class="text-xl outline-none group-data-[editing=true]:p-2 group-data-[editing=true]:bg-white/20 rounded-xl"
+              [contentEditable]="editing === prompt.id"
+              (focusout)="editTitle(prompt, $event)"
+              (click)="$event.stopImmediatePropagation()"
+            > {{ prompt.title }}</span>
+
+            <span class="text-sm outline-none group-data-[editing=true]:p-2 group-data-[editing=true]:bg-white/20 rounded-xl"
+                  [contentEditable]="editing === prompt.id"
+                  (focusout)="editDescription(prompt, $event)"
+                  (click)="$event.stopImmediatePropagation()"
+            > {{ prompt.description }}</span>
           </div>
-          <div class="cursor-pointer hover:bg-gray-300/20 rounded-xl p-3 flex items-center group"
-               (click)="deletePrompt(prompt); $event.stopImmediatePropagation()"
-          >
+
+
+          <div class="flex">
+
+
+            <div class="cursor-pointer hover:bg-gray-300/20 rounded-xl p-3 flex items-center group"
+                 (click)="editing = (prompt.id === editing)?null:prompt.id; $event.stopImmediatePropagation()">
+              @if (editing !== prompt.id) {
+                <span class="transition-all material-icons  group-hover:scale-110"
+                >edit</span>
+              } @else {
+                <span class="transition-all material-icons  group-hover:scale-110">
+                check
+              </span>
+              }
+            </div>
+            <div class="cursor-pointer hover:bg-gray-300/20 rounded-xl p-3 flex items-center group"
+                 (click)="deletePrompt(prompt); $event.stopImmediatePropagation()"
+            >
+
             <span class="transition-all material-icons  group-hover:scale-110"
             >delete</span>
+            </div>
           </div>
         </div>
       }

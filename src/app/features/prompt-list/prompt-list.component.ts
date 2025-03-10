@@ -1,14 +1,12 @@
-import {Component, inject, OnInit, Signal, signal} from '@angular/core';
-import {InputComponent} from '../../shared/input/input.component';
-import {SelectComponent} from '../../shared/select/select.component';
+import {Component, inject, OnDestroy, OnInit, Signal, signal} from '@angular/core';
 import {Prompt} from '../../models/prompt.model';
 import {PromptsService} from '../../services/prompts.service';
-import {toSignal} from '@angular/core/rxjs-interop';
 import {ShineEffectDirective} from '../../shared/directives/shine.directive';
-import {Router, RouterLink} from '@angular/router';
-import {Observable} from 'rxjs';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AsyncPipe} from '@angular/common';
-import {collection} from '@angular/fire/firestore';
+
+type ModifiablePrompt = Prompt & { modified: boolean }
+
 
 @Component({
   selector: 'app-prompt-list',
@@ -19,23 +17,49 @@ import {collection} from '@angular/fire/firestore';
   templateUrl: './prompt-list.component.html',
   styleUrl: './prompt-list.component.scss'
 })
-export class PromptListComponent{
+export class PromptListComponent implements OnDestroy {
   protected promptsService = inject(PromptsService)
-  protected prompts$!: Observable<Prompt[]>
+  protected prompts: ModifiablePrompt[] = []
   protected router = inject(Router)
+  protected activatedRoute = inject(ActivatedRoute)
+  editing:string | null = null
 
-  constructor() {
-    this.prompts$ = this.promptsService.getPrompts()
+  ngOnDestroy() {
+    this.prompts
+      .filter(prompt => prompt.modified)
+      .forEach(prompt => {
+        console.log('updating prompt', prompt)
+        this.promptsService.updatePrompt(prompt)
+      })
   }
 
-  deletePrompt(prompt: Prompt){
-    console.log('delete prompt', prompt)
+  constructor() {
+    this.promptsService.getPrompts().subscribe(prompts => {
+      this.prompts = prompts.map(prompt => ({...prompt, modified: false}))
+    })
+  }
+
+  deletePrompt(prompt: Prompt) {
     this.promptsService.deletePrompt(prompt.id)
   }
 
-
-  newPrompt(){
-    const prompt = {title: 'New Prompt', description: 'Description'}
+  newPrompt() {
+    const prompt = {title: 'New Prompt', description: 'Description'} as Prompt
     this.promptsService.newPrompt(prompt)
+  }
+
+  editTitle(prompt: ModifiablePrompt, event: Event) {
+    const target = event.target as HTMLSpanElement
+    if (target.innerText === prompt.title) return
+    prompt.title = target.innerText
+    prompt.modified = true
+  }
+
+  editDescription(prompt: ModifiablePrompt, event: Event) {
+    const target = event.target as HTMLSpanElement
+    if (target.innerText === prompt.description) return
+
+    prompt.description = target.innerText
+    prompt.modified = true
   }
 }

@@ -28,7 +28,7 @@ export class PromptsService {
   }
 
 
-  newPrompt(prompt: any) {
+  newPrompt(prompt: Prompt) {
     const dmp = new DiffMatchPatch();
     const diff = Object.assign({}, dmp.diff_main('', JSON.stringify(prompt)));
     this.storageService.addDocument(prompt, 'prompts')
@@ -37,7 +37,17 @@ export class PromptsService {
       })).subscribe()
   }
 
-  deletePrompt(promptId: any) {
+  updatePrompt(prompt: Prompt) {
+    const dmp = new DiffMatchPatch();
+    const diff = Object.assign({}, dmp.diff_main('', JSON.stringify(prompt)));
+    this.storageService.updateDocument(prompt, 'prompts', prompt.id)
+      .pipe(switchMap(() => {
+        console.log('update prompt history', prompt)
+        return this.storageService.setDocument(diff, Date.now().toString(), 'prompts', prompt.id, 'history')
+      })).subscribe()
+  }
+
+  deletePrompt(promptId: string) {
     this.storageService.deleteDocument('prompts', promptId)
       .subscribe(() => {
         this.toastService.addToast({message: 'Prompt deleted', type: 'success'})
