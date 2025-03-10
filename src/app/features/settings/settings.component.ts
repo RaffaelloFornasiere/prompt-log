@@ -29,7 +29,6 @@ export class SettingsComponent implements OnDestroy{
   constructor() {
     this.storageService.getDocument().subscribe((userSettings) => {
       this.settings = userSettings.settings;
-      console.log(this.settings);
     });
   }
 
