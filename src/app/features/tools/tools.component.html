@@ -1,7 +1,11 @@
 <div class="flex w-full h-full flex-col items-center gap-4">
 
-  <div class="bg-sky-800/30 rounded-xl w-full flex flex-col gap-4 p-5 ">
+  <div class="bg-sky-800/30 rounded-xl w-full flex flex-col gap-4 p-5 relative">
     <h1 class="text-center text-3xl bg-2">Tools</h1>
+    <span
+      (click)="save()"
+      appShineEffect
+      class="absolute right-5 top-5 p-2 rounded-xl material-icons">check</span>
     @if (tools().length > 0) {
       @for (tool of tools(); track toolIndex; let toolIndex = $index) {
         <div class=" border-slate-50/30 border rounded-xl gap-3 p-5 flex flex-col  focus-within:border-white">

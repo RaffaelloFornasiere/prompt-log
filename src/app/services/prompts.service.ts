@@ -1,20 +1,13 @@
-import {computed, effect, inject, Injectable, OnInit, signal} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {AuthService} from '../auth/auth.service';
-import {
-  addDoc,
-  collection,
-  collectionData,
-  deleteDoc,
-  doc,
-  docData,
-  Firestore, setDoc,
-} from '@angular/fire/firestore';
-import {map, of, switchMap} from 'rxjs';
+import {Firestore,} from '@angular/fire/firestore';
+import {combineLatest, concatMap, defer, map, mergeWith, of, switchMap, take} from 'rxjs';
 import {NewPrompt, Prompt} from '../models/prompt.model';
-import {DocumentData} from '@angular/fire/compat/firestore';
 import {StorageService} from '../core/storage/storage.service';
-import DiffMatchPatch from 'diff-match-patch';
+import DiffMatchPatch, {Diff} from 'diff-match-patch';
 import {ToastService} from '../shared/toast/toast.service';
+import stableStringify from 'json-stable-stringify';
+
 
 @Injectable({providedIn: 'root'})
 export class PromptsService {
@@ -28,23 +21,48 @@ export class PromptsService {
   }
 
 
-  newPrompt(prompt: NewPrompt) {
+  computePatch(original: Prompt, updated: Prompt | NewPrompt) {
+    const strOriginal = stableStringify(original);
+    const strUpdated = stableStringify(updated);
+    if (!strOriginal || !strUpdated) {
+      this.toastService.addToast({message: 'Error updating prompt', type: 'error'})
+      throw new Error('Error updating prompt')
+    }
+
     const dmp = new DiffMatchPatch();
-    const diff = Object.assign({}, dmp.diff_main('', JSON.stringify(prompt)));
-    this.storageService.addDocument(prompt, 'prompts')
+    const diffs = dmp.diff_main(strOriginal, strUpdated);
+    dmp.diff_cleanupSemantic(diffs);
+    const patch = dmp.patch_toText(dmp.patch_make(strOriginal, strUpdated, diffs))
+    return {patchStr: patch}
+  }
+
+
+  newPrompt(prompt: NewPrompt) {
+    const patch = this.computePatch({} as Prompt, prompt)
+    return this.storageService.addDocument(prompt, 'prompts')
       .pipe(switchMap((prompt) => {
-        return this.storageService.setDocument(diff, Date.now().toString(), 'prompts', prompt.id, 'history')
-      })).subscribe()
+        return this.storageService.setDocument(patch, Date.now().toString(), 'prompts', prompt.id, 'history')
+      }))
   }
 
   updatePrompt(prompt: Prompt) {
-    const dmp = new DiffMatchPatch();
-    const diff = Object.assign({}, dmp.diff_main('', JSON.stringify(prompt)));
-    this.storageService.updateDocument(prompt, 'prompts', prompt.id)
-      .pipe(switchMap(() => {
-        console.log('update prompt history', prompt)
-        return this.storageService.setDocument(diff, Date.now().toString(), 'prompts', prompt.id, 'history')
-      })).subscribe()
+    const getDiffs$ = () =>
+      this.storageService.getDocument('prompts', prompt.id)
+        .pipe(
+          take(1),
+          map((oldPrompt) => {
+          return this.computePatch(oldPrompt, prompt)
+        }))
+
+
+    return getDiffs$().pipe(
+      switchMap((patch) => {
+        return this.storageService.updateDocument(prompt, 'prompts', prompt.id).pipe(map(() => patch))
+      }),
+      switchMap((patch) => {
+        return this.storageService.setDocument(patch, Date.now().toString(), 'prompts', prompt.id, 'history')
+      })
+    )
   }
 
   deletePrompt(promptId: string) {

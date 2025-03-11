@@ -26,6 +26,11 @@ export interface Tool {
   };
 }
 
+export interface PromptRecord{
+  id: string;
+  patchStr: string
+}
+
 export interface Prompt {
   id: string ;
   title: string;

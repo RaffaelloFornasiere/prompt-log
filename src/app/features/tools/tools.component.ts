@@ -8,6 +8,7 @@ import {NewPrompt, Prompt, Tool} from '../../models/prompt.model';
 import {ActivatedRoute} from '@angular/router';
 import {PropertyType, Variable} from '../../models/generic-variable.model';
 import {StorageService} from '../../core/storage/storage.service';
+import {PromptsService} from '../../services/prompts.service';
 
 type ViewToolType = Omit<Tool, "inputSchema" | "output"> & {
   inputSchema: {
@@ -32,7 +33,8 @@ export class ToolsComponent implements OnDestroy {
   activatedRoute = inject(ActivatedRoute);
   prompt: Prompt | undefined = undefined;
   inputTypes = ["string", "number", "boolean", "array", "object"];
-  storageService = inject(StorageService);
+  promptService = inject(PromptsService);
+
 
   tools = signal<ViewToolType[]>([]);
 
@@ -45,9 +47,13 @@ export class ToolsComponent implements OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  save() {
     this.prompt!.tools = this.tools().map(this.toTool.bind(this));
-    this.storageService.updateDocument(this.prompt!, 'prompts', this.prompt!.id);
+    this.promptService.updatePrompt(this.prompt!).subscribe();
+  }
+
+  ngOnDestroy() {
+
   }
 
 

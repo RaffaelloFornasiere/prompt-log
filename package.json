@@ -22,6 +22,7 @@
     "@tailwindcss/postcss": "^4.0.9",
     "autoprefixer": "^10.4.20",
     "diff-match-patch": "^1.0.5",
+    "json-stable-stringify": "^1.2.1",
     "material-design-icons": "^3.0.1",
     "material-icons": "^1.13.14",
     "postcss": "^8.5.3",

@@ -1,58 +1,101 @@
-<div class="flex w-full h-full flex-col items-center gap-4 overflow-scroll">
+<div class="flex w-full h-full items-center flex-col gap-4 overflow-scroll">
 
-  <div class="w-full bg-sky-800/30 rounded-xl w-full flex flex-col gap-4 p-5 ">
+  <div class="w-full bg-sky-800/30 rounded-xl h-full p-5 overflow-hidden whitespace-nowrap">
 
-    <h1 class="text-center text-3xl">Final Prompt</h1>
-    <div class="relative top-0 left-[calc(100%-2.5rem)] w-fit cursor-pointer"
-         (click)="copyText(); toastService.addToast({message:'Copied to clipboard', type:'success'})">
-      <span class="material-icons">content_copy</span>
+    <div
+      [class]="{'w-full': !historyVisible(),
+      'w-2/3': historyVisible(),
+      }"
+      class="h-full transition-all duration-200 flex inline-block flex-col gap-2 overflow-scroll">
+
+      <div class="relative w-full">
+
+        <h1 class="text-center text-3xl">Final Prompt</h1>
+
+        <div
+          appShineEffect
+          [class.opacity-0]="historyVisible()"
+          class="absolute p-2 rounded-xl flex gap-2 items-center top-0 right-0 w-fit cursor-pointer"
+          [attr.data-history]="true"
+          (click)="historyVisible.set(!historyVisible())">
+
+          <span class="material-icons">history</span>
+          Prompt History
+        </div>
+      </div>
+      <div class="flex w-full justify-end mb-1">
+        <div
+          appShineEffect
+          class="p-2 rounded-xl flex items-center w-fit cursor-pointer"
+          (click)="copyText(); toastService.addToast({message:'Copied to clipboard', type:'success'})">
+          <span class="material-icons">content_copy</span>
+          Copy Prompt
+        </div>
+      </div>
+
+      <div #_prompt class="border rounded-xl w-full p-4 min-h-32 whitespace-pre-wrap overflow-scroll">
+
+
+        <app-expansion #expansionComponent [opened]="true">
+          <div ngProjectAs="expansion-header" class="bg-primary-1/10 w-full flex justify-between items-center">
+            {{ buildDelimiterStart('Tools') }}
+            <span class="material-icons transition all" [attr.data-no-copy]="true"
+                  [style]="{ transform: expansionComponent.opened() ? 'rotate(180deg)' : 'rotate(0deg)' }">
+            keyboard_arrow_down
+          </span>
+          </div>
+          <div class="bg-primary-1/10 w-full" ngProjectAs="expansion-content">
+            <span style="display:none">      {{ '\n' }}      </span>
+            @for (action of prompt?.tools; track action) {
+              {{ JSON.stringify(action, null, 2) }}
+            }
+            {{ '\n' }}
+            {{ buildDelimiterEnd('Tools') }}
+          </div>
+        </app-expansion>
+
+
+        {{ '\n' }}
+        <div class="bg-primary-1/10 w-full py-2">
+          {{ prompt?.taskDescription }}
+        </div>
+        {{ '\n' }}
+        <app-expansion [opened]="true">
+          <div ngProjectAs="expansion-header" class="bg-primary-1/10 w-full flex justify-between items-center">
+            {{ buildDelimiterStart('Examples') }}
+            <span class="material-icons transition all" [attr.data-no-copy]="true"
+                  [style]="{ transform: expansionComponent.opened() ? 'rotate(180deg)' : 'rotate(0deg)' }">
+            keyboard_arrow_down
+          </span>
+          </div>
+          <div class="bg-primary-1/10 w-full" ngProjectAs="expansion-content">
+            <span style="display:none">      {{ '\n' }}      </span>
+            @for (example of prompt?.examples; track example) {
+              {{ example.content }}
+            }
+            {{ '\n' }}
+            {{ buildDelimiterEnd('Examples') }}
+          </div>
+
+        </app-expansion>
+      </div>
     </div>
 
-    <div #_prompt class="border rounded-xl w-full p-4 min-h-32 whitespace-pre-wrap">
-
-
-      <app-expansion #expansionComponent [opened]="true">
-        <div ngProjectAs="expansion-header" class="bg-primary-1/10 w-full flex justify-between items-center">
-          {{ buildDelimiterStart('Tools') }}
-          <span class="material-icons transition all" [attr.data-no-copy]="true"
-                [style]="{ transform: expansionComponent.opened() ? 'rotate(180deg)' : 'rotate(0deg)' }">
-            keyboard_arrow_down
-          </span>
+    <div class="ml-2 overflow-hidden inline-block transition-all h-full duration-200 w-1/3"
+         [class.opacity-0]="!historyVisible()">
+      <div class="relative h-full w-full rounded-xl bg-white/10 p-2">
+        <div>
+          <span class="material-icons p-2 rounded-xl"
+                appShineEffect (click)="historyVisible.set(!historyVisible())">close</span>
+          <span class="text-xl w-full flex justify-center ">Prompt History</span>
         </div>
-        <div class="bg-primary-1/10 w-full" ngProjectAs="expansion-content">
-          <span style="display:none">      {{ '\n' }}      </span>
-          @for (action of prompt?.tools; track action) {
-            {{ JSON.stringify(action, null, 2) }}
-          }
-          {{ '\n' }}
-          {{ buildDelimiterEnd('Tools') }}
-        </div>
-      </app-expansion>
 
-
-      {{ '\n' }}
-      <div class="bg-primary-1/10 w-full py-2">
-        {{ prompt?.taskDescription }}
+        <app-history
+          [history]="promptHistory()"
+          [(activeRecord)]="activeRecord"
+        ></app-history>
       </div>
-      {{ '\n' }}
-      <app-expansion [opened]="true">
-        <div ngProjectAs="expansion-header" class="bg-primary-1/10 w-full flex justify-between items-center">
-          {{ buildDelimiterStart('Examples') }}
-          <span class="material-icons transition all" [attr.data-no-copy]="true"
-                [style]="{ transform: expansionComponent.opened() ? 'rotate(180deg)' : 'rotate(0deg)' }">
-            keyboard_arrow_down
-          </span>
-        </div>
-        <div class="bg-primary-1/10 w-full" ngProjectAs="expansion-content">
-          <span style="display:none">      {{ '\n' }}      </span>
-          @for (example of prompt?.examples; track example) {
-            {{ example.content }}
-          }
-          {{ '\n' }}
-          {{ buildDelimiterEnd('Examples') }}
-        </div>
-
-      </app-expansion>
     </div>
   </div>
+
 </div>

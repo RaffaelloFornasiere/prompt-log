@@ -27,3 +27,11 @@ html {
 bg{
   @apply backdrop-blur-2xl;
 }
+
+.tooltip {
+  @apply invisible absolute;
+}
+
+.has-tooltip:hover .tooltip {
+  @apply visible z-50;
+}

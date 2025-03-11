@@ -1,1 +1,24 @@
-<p>history works!</p>
+<div class="flex flex-col gap-2 my-5 relative">
+
+
+  @for (promptRecord of history(); track promptRecord.id) {
+    <div
+      #recordBlock
+      (click)="activeRecord.set($index)"
+      class="flex p-2 w-full h-16 rounded-xl items-center gap-5"
+    >
+      <span class="rounded-full h-3 w-3 border-2 border-white/40"
+            [class]="{'bg-white/40': $index === activeRecord()}"
+      ></span>
+      <div
+        [class.opacity-0]="$last"
+        class="h-full border-l relative top-8.5 -left-6.5"></div>
+      <div class="p-3 rounded-xl"
+        [class]="{'bg-white/15': $index === activeRecord()}"
+      >
+
+        {{ promptRecord.id | date:'MMM dd, yyyy - HH:mm' }}
+      </div>
+    </div>
+  }
+</div>

@@ -5,7 +5,7 @@ import {ShineEffectDirective} from '../../shared/directives/shine.directive';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AsyncPipe} from '@angular/common';
 
-type ModifiablePrompt = Prompt & { modified: boolean }
+type ModifiablePrompt = Prompt & { modified?: boolean }
 
 
 @Component({
@@ -26,10 +26,10 @@ export class PromptListComponent implements OnDestroy {
     this.prompts
       .filter(prompt => prompt.modified)
       .forEach(prompt => {
-        this.promptsService.updatePrompt(prompt)
+        delete prompt.modified
+        this.promptsService.updatePrompt(prompt).subscribe()
       })
   }
-
 
   constructor() {
     this.promptsService.getPrompts().subscribe(prompts => {
@@ -44,6 +44,8 @@ export class PromptListComponent implements OnDestroy {
   newPrompt() {
     const prompt = {title: 'New Prompt', description: 'Description'} as Prompt
     this.promptsService.newPrompt(prompt)
+      .subscribe(newPrompt => {
+      })
   }
 
   editTitle(prompt: ModifiablePrompt, event: Event) {
