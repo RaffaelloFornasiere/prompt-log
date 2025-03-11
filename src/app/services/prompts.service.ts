@@ -10,7 +10,7 @@ import {
   Firestore, setDoc,
 } from '@angular/fire/firestore';
 import {map, of, switchMap} from 'rxjs';
-import {Prompt} from '../models/prompt.model';
+import {NewPrompt, Prompt} from '../models/prompt.model';
 import {DocumentData} from '@angular/fire/compat/firestore';
 import {StorageService} from '../core/storage/storage.service';
 import DiffMatchPatch from 'diff-match-patch';
@@ -28,7 +28,7 @@ export class PromptsService {
   }
 
 
-  newPrompt(prompt: Prompt) {
+  newPrompt(prompt: NewPrompt) {
     const dmp = new DiffMatchPatch();
     const diff = Object.assign({}, dmp.diff_main('', JSON.stringify(prompt)));
     this.storageService.addDocument(prompt, 'prompts')

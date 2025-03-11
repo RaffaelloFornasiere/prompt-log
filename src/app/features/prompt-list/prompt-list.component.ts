@@ -1,5 +1,5 @@
 import {Component, inject, OnDestroy, OnInit, Signal, signal} from '@angular/core';
-import {Prompt} from '../../models/prompt.model';
+import {NewPrompt, Prompt} from '../../models/prompt.model';
 import {PromptsService} from '../../services/prompts.service';
 import {ShineEffectDirective} from '../../shared/directives/shine.directive';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -26,10 +26,10 @@ export class PromptListComponent implements OnDestroy {
     this.prompts
       .filter(prompt => prompt.modified)
       .forEach(prompt => {
-        console.log('updating prompt', prompt)
         this.promptsService.updatePrompt(prompt)
       })
   }
+
 
   constructor() {
     this.promptsService.getPrompts().subscribe(prompts => {
@@ -52,6 +52,7 @@ export class PromptListComponent implements OnDestroy {
     prompt.title = target.innerText
     prompt.modified = true
   }
+
 
   editDescription(prompt: ModifiablePrompt, event: Event) {
     const target = event.target as HTMLSpanElement
