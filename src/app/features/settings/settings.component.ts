@@ -29,7 +29,7 @@ export class SettingsComponent implements OnDestroy{
   constructor() {
     this.storageService.getDocument().subscribe((userSettings) => {
       this.settings = userSettings.settings;
-
+      console.log(this.settings)
     });
   }
 
@@ -51,6 +51,7 @@ export class SettingsComponent implements OnDestroy{
   }
 
   setDelimiter(delimiter: string) {
+    console.log(delimiter, (this.delimiters as any)[delimiter])
     this.settings!.delimiter = (this.delimiters as any)[delimiter];
   }
 

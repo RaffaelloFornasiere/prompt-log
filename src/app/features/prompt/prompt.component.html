@@ -1,40 +1,58 @@
-<div class="flex w-full h-full flex-col items-center px-10 gap-4 overflow-scroll">
+<div class="flex w-full h-full flex-col items-center gap-4 overflow-scroll">
 
   <div class="w-full bg-sky-800/30 rounded-xl w-full flex flex-col gap-4 p-5 ">
 
     <h1 class="text-center text-3xl">Final Prompt</h1>
-    <div class="relative top-14 left-[calc(100%-2.5rem)] w-fit cursor-pointer"
-         (click)="copyText(_prompt.innerText); toastService.addToast({message:'Copied to clipboard', type:'success'})">
+    <div class="relative top-0 left-[calc(100%-2.5rem)] w-fit cursor-pointer"
+         (click)="copyText(); toastService.addToast({message:'Copied to clipboard', type:'success'})">
       <span class="material-icons">content_copy</span>
     </div>
-    <p #_prompt class="border rounded-xl w-full p-4 min-h-32 whitespace-pre-wrap">
 
-      {{ buildDelimiterStart('Tools') }}
-      {{ '\n' }}
-      @for (action of prompt?.tools; track action) {
-        {{ JSON.stringify(action, null, 2) }}
-      }
-      {{ '\n' }}
-      {{ buildDelimiterEnd('Tools') }}
-      {{ '\n' }}
-      {{ '\n' }}
+    <div #_prompt class="border rounded-xl w-full p-4 min-h-32 whitespace-pre-wrap">
 
 
-      {{ prompt?.taskDescription }}
-      {{ '\n' }}
-      {{ '\n' }}
-      {{ buildDelimiterStart('Examples') }}
-      {{ '\n' }}
+      <app-expansion #expansionComponent [opened]="true">
+        <div ngProjectAs="expansion-header" class="bg-primary-1/10 w-full flex justify-between items-center">
+          {{ buildDelimiterStart('Tools') }}
+          <span class="material-icons transition all" [attr.data-no-copy]="true"
+                [style]="{ transform: expansionComponent.opened() ? 'rotate(180deg)' : 'rotate(0deg)' }">
+            keyboard_arrow_down
+          </span>
+        </div>
+        <div class="bg-primary-1/10 w-full" ngProjectAs="expansion-content">
+          <span style="display:none">      {{ '\n' }}      </span>
+          @for (action of prompt?.tools; track action) {
+            {{ JSON.stringify(action, null, 2) }}
+          }
+          {{ '\n' }}
+          {{ buildDelimiterEnd('Tools') }}
+        </div>
+      </app-expansion>
 
-      @for (example of prompt?.examples; track example) {
-        {{ example.content }}
-      }
-      {{ '\n' }}
-      {{ buildDelimiterEnd('Examples') }}
-      {{ '\n' }}
-      {{ '\n' }}
 
-    </p>
+      {{ '\n' }}
+      <div class="bg-primary-1/10 w-full py-2">
+        {{ prompt?.taskDescription }}
+      </div>
+      {{ '\n' }}
+      <app-expansion [opened]="true">
+        <div ngProjectAs="expansion-header" class="bg-primary-1/10 w-full flex justify-between items-center">
+          {{ buildDelimiterStart('Examples') }}
+          <span class="material-icons transition all" [attr.data-no-copy]="true"
+                [style]="{ transform: expansionComponent.opened() ? 'rotate(180deg)' : 'rotate(0deg)' }">
+            keyboard_arrow_down
+          </span>
+        </div>
+        <div class="bg-primary-1/10 w-full" ngProjectAs="expansion-content">
+          <span style="display:none">      {{ '\n' }}      </span>
+          @for (example of prompt?.examples; track example) {
+            {{ example.content }}
+          }
+          {{ '\n' }}
+          {{ buildDelimiterEnd('Examples') }}
+        </div>
+
+      </app-expansion>
+    </div>
   </div>
 </div>
-

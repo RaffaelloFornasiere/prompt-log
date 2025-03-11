@@ -1,0 +1,17 @@
+<div class="w-full flex flex-col gap-3 rounded"
+     style="transition: all ease-in-out 0.3s">
+  <div class="flex content-between items-center "
+       (click)="opened.set(!opened())">
+    <div class="flex-grow">
+      <ng-content select="expansion-header"></ng-content>
+      <div class=" w-full"
+           style="transition: grid-template-rows 0.5s ease-in-out; display: grid"
+           [style]="{ 'grid-template-rows': !opened() ? '0fr' : '1fr' }"
+      >
+        <div style="overflow: hidden">
+          <ng-content select="expansion-content"></ng-content>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

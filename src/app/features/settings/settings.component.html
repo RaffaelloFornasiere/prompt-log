@@ -3,29 +3,24 @@
   <div class="bg-primary-4/50 rounded-xl w-full flex flex-col gap-4 p-5 ">
     <h1 class="text-center text-3xl">Settings</h1>
     @if (settings) {
-      <app-tabs [activeTab]="'API'" class="p-4 rounded-xl">
+      <app-tabs [activeTab]="'Prompt Settings'" class="p-4 rounded-xl">
         <div *appTab="'Prompt Settings'" class="flex flex-col gap-4">
           <div class="flex flex-col gap-4">
             <span>Sections Delimiter</span>
             @if (settings.delimiter) {
 
               <div class="rounded-xl overflow-hidden flex w-fit ">
-                <button appShineEffect
-                        class="p-2  data-[checked=true]:bg-sky-800 border border-slate-400/70 border-r-0 rounded-l-xl"
-                        [attr.data-checked]="settings.delimiter.name == 'line'"
+                <button
+                        class="p-2  data-[checked=true]:bg-sky-400/20 border border-slate-400/70 border-r-0 rounded-l-xl"
+                        [attr.data-checked]="settings.delimiter.name === 'line'"
                         (click)="setDelimiter('line')"
                 >Line
                 </button>
-                <button appShineEffect class="p-2 data-[checked=true]:bg-white/30 border-x border-slate-400/70 border"
-                        [attr.data-checked]="settings.delimiter.name == 'xml'"
+                <button
+                        class="p-2 data-[checked=true]:bg-sky-400/20  border-slate-400/70 border  rounded-r-xl"
+                        [attr.data-checked]="settings.delimiter.name === 'xml'"
                         (click)="setDelimiter('xml')"
                 >Xml
-                </button>
-                <button appShineEffect
-                        class="p-2  data-[checked=true]:bg-sky-800 border border-slate-400/70 border-l-0 rounded-r-xl"
-                        [attr.data-checked]="settings.delimiter.name == 'custom'"
-                        (click)="setDelimiter('custom')"
-                >Custom
                 </button>
               </div>
             }
