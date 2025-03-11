@@ -42,7 +42,7 @@
         <div class="w-full flex items-center justify-center">
 
           <div appShineEffect [gradientSize]="200"
-               class="rounded-xl w-full p-3 cursor-pointer flex items-center gap-5 overflow-hidden"
+               class="rounded-xl w-full pl-3 p-2 cursor-pointer flex items-center gap-5 overflow-hidden"
                routerLink="">
             <span class="material-icons-outlined text-4xl">home</span>
             <!--            @if (sidenavService.opened()) {-->
@@ -53,7 +53,7 @@
         <div class="w-full flex items-center justify-center">
 
           <div appShineEffect [gradientSize]="200"
-               class="rounded-xl w-full p-3 cursor-pointer flex items-center gap-5 overflow-hidden"
+               class="rounded-xl w-full pl-3 p-2 cursor-pointer flex items-center gap-5 overflow-hidden"
 
                routerLink="/settings">
             <span class="material-icons-outlined text-4xl">settings</span>
@@ -77,7 +77,7 @@
           <div class="w-full flex items-center justify-center">
 
             <div appShineEffect [gradientSize]="200"
-                 class="rounded-xl w-full p-3 cursor-pointer flex items-center gap-5 overflow-hidden"
+                 class="rounded-xl w-full pl-3 p-2 cursor-pointer flex items-center gap-5 overflow-hidden"
                  [routerLink]="'/prompt/'+promptId+'/'+item.route">
 
               <span class="material-icons-outlined text-4xl">{{ item.icon }}</span>
@@ -93,7 +93,7 @@
       @if (authService.user()) {
         <button
           appShineEffect
-          class="w-full p-3 cursor-pointer flex items-center  rounded-xl gap-1"
+          class="w-full p-2 cursor-pointer flex items-center  rounded-xl gap-1"
           (click)="signOut()"
         >
           <span class="material-icons-outlined">logout</span>
