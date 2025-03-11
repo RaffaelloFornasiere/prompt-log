@@ -1,41 +1,40 @@
 <div class="flex w-full h-full flex-col items-center px-10 gap-4 overflow-scroll">
 
-  <div class="relative bg-sky-800/30 rounded-xl w-full flex flex-col gap-4 p-5 ">
+  <div class="w-full bg-sky-800/30 rounded-xl w-full flex flex-col gap-4 p-5 ">
 
     <h1 class="text-center text-3xl">Final Prompt</h1>
     <div class="relative top-14 left-[calc(100%-2.5rem)] w-fit cursor-pointer"
-    (click)="copyText(_prompt.innerText); toastService.addToast({message:'Copied to clipboard', type:'success'})"
-      >
+         (click)="copyText(_prompt.innerText); toastService.addToast({message:'Copied to clipboard', type:'success'})">
       <span class="material-icons">content_copy</span>
     </div>
-    <div #_prompt class="border rounded-xl p-4 min-h-32 whitespace-pre">
+    <p #_prompt class="border rounded-xl w-full p-4 min-h-32 whitespace-pre-wrap">
 
-      {{buildDelimiterStart('Actions')}}
-      {{'\n'}}
+      {{ buildDelimiterStart('Tools') }}
+      {{ '\n' }}
       @for (action of prompt?.tools; track action) {
         {{ JSON.stringify(action, null, 2) }}
       }
-      {{'\n'}}
-      {{buildDelimiterEnd('Actions')}}
-      {{'\n'}}
-      {{'\n'}}
+      {{ '\n' }}
+      {{ buildDelimiterEnd('Tools') }}
+      {{ '\n' }}
+      {{ '\n' }}
 
 
       {{ prompt?.taskDescription }}
-      {{'\n'}}
-      {{'\n'}}
-      {{buildDelimiterStart('Examples')}}
-      {{'\n'}}
+      {{ '\n' }}
+      {{ '\n' }}
+      {{ buildDelimiterStart('Examples') }}
+      {{ '\n' }}
 
       @for (example of prompt?.examples; track example) {
         {{ example.content }}
       }
-      {{'\n'}}
-      {{buildDelimiterEnd('Examples')}}
-      {{'\n'}}
-      {{'\n'}}
+      {{ '\n' }}
+      {{ buildDelimiterEnd('Examples') }}
+      {{ '\n' }}
+      {{ '\n' }}
 
-    </div>
+    </p>
   </div>
 </div>
 
