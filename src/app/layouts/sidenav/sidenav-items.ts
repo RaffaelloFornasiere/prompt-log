@@ -25,11 +25,11 @@ export const sidenavItems: SidenavItem [] = [
     route: '',
     icon: 'check'
   },
-  {
-    name: 'Export',
-    label: 'Export',
-    route: 'export',
-    icon: 'cloud_download'
-  }
+  // {
+  //   name: 'Export',
+  //   label: 'Export',
+  //   route: 'export',
+  //   icon: 'cloud_download'
+  // }
 
 ]

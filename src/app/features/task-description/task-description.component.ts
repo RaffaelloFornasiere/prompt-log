@@ -102,7 +102,10 @@ export class TaskDescriptionComponent{
   }
 
   addVariable() {
-    this.prompt?.variables.push({name: "", description: "", type: null});
+    if(!this.prompt!.variables)
+      this.prompt!.variables = [];
+
+    this.prompt!.variables.push({name: "", description: "", type: null});
   }
 
   deleteVariable(index: number) {

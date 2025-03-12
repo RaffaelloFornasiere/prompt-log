@@ -2,14 +2,14 @@
   @if (prompt) {
 
 
-    <div class="relative bg-sky-800/30 rounded-xl w-full flex flex-col gap-4 p-5 ">
+    <div class="relative bg-sky-800/30 rounded-xl w-full flex flex-col gap-4 p-5 h-full overflow-scroll">
       <h1 class="text-center text-3xl">Task Description</h1>
       <span class="absolute top-3 right-5 p-2  material-icons rounded-xl" appShineEffect (click)="save()">check</span>
       <div class=" rounded-xl p-3 flex flex-col h-full gap-3">
-        <div class="flex w-full gap-3">
+        <div class="flex w-full gap-3 h-full">
           <app-text-area
             appShineEffect
-            class="min-h-96 w-full"
+            class="min-h-96 w-full h-full"
             [label]="'Prompt Description'"
             [(value)]="prompt.taskDescription"
           >
