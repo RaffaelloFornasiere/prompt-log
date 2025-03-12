@@ -35,5 +35,3 @@ MIT License
 ## Contributing
 Contributions are welcome. Submit issues or pull requests.
 
-## Contact
-For any inquiries, reach out to the maintainer.
