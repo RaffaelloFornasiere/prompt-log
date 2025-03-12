@@ -49,7 +49,7 @@ export class SidenavComponent {
     }
 
     route.params.subscribe(params => {
-      this.promptId = params['promptId'] || null;
+      this.promptId = params['promptInfo'] || null;
     });
   }
 

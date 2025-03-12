@@ -8,9 +8,10 @@ import {ActivatedRoute} from '@angular/router';
 import {Prompt} from '../../models/prompt.model';
 import prompt from './improve-prompt.prompt';
 import {ToastService} from '../../shared/toast/toast.service';
-import {StorageService} from '../../core/storage/storage.service';
 import {of, switchMap} from 'rxjs';
 import {UserSettings} from '../../models/user-settings.model';
+import {PromptsService} from '../../services/prompts.service';
+import {StorageService} from '../../core/storage/storage.service';
 
 @Component({
   selector: "app-task-description",
@@ -20,10 +21,11 @@ import {UserSettings} from '../../models/user-settings.model';
   templateUrl: "./task-description.component.html",
   styleUrl: "./task-description.component.scss",
 })
-export class TaskDescriptionComponent implements OnDestroy{
+export class TaskDescriptionComponent{
   protected activatedRoute = inject(ActivatedRoute);
   protected toastService = inject(ToastService);
   protected storageService = inject(StorageService);
+  protected promptService = inject(PromptsService);
   protected http = inject(HttpClient);
   prompt: Prompt | undefined = undefined;
 
@@ -35,19 +37,20 @@ export class TaskDescriptionComponent implements OnDestroy{
   }
 
 
-  ngOnDestroy() {
-    this.storageService.updateDocument(this.prompt, 'prompts', this.prompt!.id);
+  save() {
+    this.promptService.updatePrompt(this.prompt!).subscribe();
   }
 
+
   improveWithAI() {
-    if (!this.prompt?.description) {
+    if (!this.prompt?.taskDescription) {
       this.toastService.addToast({message: 'Please enter a task description', type: 'warning'});
       return;
     }
     let user_message = prompt;
     user_message = user_message.replace(
       "{{task_description}}",
-      this.prompt?.description,
+      this.prompt?.taskDescription,
     );
     let variablesText = "";
     if (
@@ -92,7 +95,7 @@ export class TaskDescriptionComponent implements OnDestroy{
       const improveSuggestions = content.match(
         /\n\s*<improvements>([\s\S]*?)<\/improvements>/,
       )[1];
-      this.prompt!.description = newPrompt;
+      this.prompt!.taskDescription = newPrompt;
     });
 
 

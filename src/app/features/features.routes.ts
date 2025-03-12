@@ -1,5 +1,6 @@
 import {Routes} from '@angular/router';
 import promptResolve from '../services/resolvers/prompt.resolver';
+import {HistoryComponent} from './history/history.component';
 
 export const routes: Routes = [
   {
@@ -7,12 +8,12 @@ export const routes: Routes = [
     loadComponent: () => import('./prompt-list/prompt-list.component').then(m => m.PromptListComponent)
   },
   {
-    path: 'prompt/:promptId',
+    path: 'prompt/:promptInfo',
     children: [
       {
         path: '',
         resolve:{
-          prompt: promptResolve
+          prompt: promptResolve,
         },
         loadComponent: () => import('./prompt/prompt.component').then(m => m.PromptComponent)
       },
@@ -28,6 +29,7 @@ export const routes: Routes = [
         resolve:{
           prompt: promptResolve
         },
+
         loadComponent: () => import('./examples/examples.component').then(m => m.ExamplesComponent)
       },
       {
@@ -43,6 +45,12 @@ export const routes: Routes = [
           prompt: promptResolve
         },
         loadComponent: () => import('./task-description/task-description.component').then(m => m.TaskDescriptionComponent)
+      },
+
+      {
+        path: '',
+        outlet: 'right-sidenav',
+        loadComponent: () => import('./history/history.component').then(m => m.HistoryComponent)
       }
     ]
   },

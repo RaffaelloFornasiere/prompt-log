@@ -31,6 +31,11 @@ export class PromptListComponent implements OnDestroy {
       })
   }
 
+  savePrompt(prompt: ModifiablePrompt) {
+    delete prompt.modified
+    this.promptsService.updatePrompt(prompt).subscribe()
+  }
+
   constructor() {
     this.promptsService.getPrompts().subscribe(prompts => {
       this.prompts = prompts.map(prompt => ({...prompt, modified: false}))

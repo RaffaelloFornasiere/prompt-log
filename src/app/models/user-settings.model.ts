@@ -1,3 +1,4 @@
+import {Prompt} from './prompt.model';
 
 export interface Server {
   name: string;
@@ -7,7 +8,7 @@ export interface Server {
   active: boolean;
 }
 
-export type Block = "task-description" | "examples" | "tools"
+export type Block = keyof Pick<Prompt, 'taskDescription' | 'examples' | 'tools'>;
 
 export interface UserSettings{
   delimiter: {
@@ -19,3 +20,5 @@ export interface UserSettings{
   servers: Server[];
   blocksOrder?: [Block, Block, Block];
 }
+
+export const defaultBlockOrder: [Block, Block, Block] = ["tools", "taskDescription", "examples"];

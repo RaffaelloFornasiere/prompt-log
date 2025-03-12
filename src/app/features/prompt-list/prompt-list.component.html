@@ -46,7 +46,7 @@
 
 
             <div class="cursor-pointer hover:bg-gray-300/20 rounded-xl p-3 flex items-center group"
-                 (click)="editing = (prompt.id === editing)?null:prompt.id; $event.stopImmediatePropagation()">
+                 (click)="savePrompt(prompt);editing = (prompt.id === editing)?null:prompt.id; $event.stopImmediatePropagation()">
               @if (editing !== prompt.id) {
                 <span class="transition-all material-icons  group-hover:scale-110"
                 >edit</span>

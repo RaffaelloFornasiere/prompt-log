@@ -6,6 +6,7 @@ import {ShineEffectDirective} from '../../shared/directives/shine.directive';
 import {ActivatedRoute} from '@angular/router';
 import {Example, Prompt} from '../../models/prompt.model';
 import {StorageService} from '../../core/storage/storage.service';
+import {PromptsService} from '../../services/prompts.service';
 
 
 
@@ -25,7 +26,7 @@ export class ExamplesComponent implements OnDestroy{
 
   activatedRoute = inject(ActivatedRoute);
   examples = signal<Example[]>([]);
-  storageService = inject(StorageService);
+  promptsService = inject(PromptsService);
   prompt: Prompt | undefined = undefined;
 
   constructor() {
@@ -36,8 +37,12 @@ export class ExamplesComponent implements OnDestroy{
   }
 
   ngOnDestroy() {
+  }
+
+  save(){
     this.prompt!.examples = this.examples();
-    this.storageService.updateDocument(this.prompt, 'prompts', this.prompt!.id);
+    this.promptsService.updatePrompt(this.prompt!).subscribe()
+
   }
 
   addExample(){

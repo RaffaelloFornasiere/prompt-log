@@ -1,4 +1,5 @@
 import {PropertyType, Variable} from './generic-variable.model';
+import stableStringify from 'json-stable-stringify';
 
 
 export interface Example {
@@ -26,13 +27,13 @@ export interface Tool {
   };
 }
 
-export interface PromptRecord{
+export interface PromptRecord {
   id: string;
   patchStr: string
 }
 
 export interface Prompt {
-  id: string ;
+  id: string;
   title: string;
   description: string;
   taskDescription: string;
@@ -43,3 +44,5 @@ export interface Prompt {
 }
 
 export type NewPrompt = Omit<Prompt, 'id'>;
+
+

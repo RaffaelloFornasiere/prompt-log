@@ -1,13 +1,15 @@
 @if (!loading) {
 
-  <div class="h-full w-full flex p-5 gap-5">
+  <div class="h-full w-full flex p-5 gap-5 drop-shadow-2xl">
     @if (authenticated()) {
       <app-sidenav></app-sidenav>
     }
 
-    <div class="flex-grow flex-column drop-shadow-2xl rounded-xl h-full">
-        <router-outlet></router-outlet>
+    <div class="flex-grow flex-column rounded-xl h-full">
+      <router-outlet hidden></router-outlet>
     </div>
+
+    <router-outlet hidden name="right-sidenav"></router-outlet>
   </div>
 
   <app-toast></app-toast>
