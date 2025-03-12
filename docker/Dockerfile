@@ -9,6 +9,6 @@ RUN npm run build --configuration=production
 
 # Stage 2: Serve with NGINX
 FROM nginx:latest
-COPY --from=build /app/dist/prompt-generator/browser /usr/share/nginx/html
+COPY --from=build /app/dist/prompt-log/browser /usr/share/nginx/html
 COPY ../docker/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80

@@ -1,4 +1,4 @@
-name: prompt-generator
+name: prompt-log
 
 services:
   angular-app:

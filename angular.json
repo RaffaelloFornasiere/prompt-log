@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "prompt-generator": {
+    "prompt-log": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/prompt-generator",
+            "outputPath": "dist/prompt-log",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "prompt-generator:build:production"
+              "buildTarget": "prompt-log:build:production"
             },
             "development": {
-              "buildTarget": "prompt-generator:build:development"
+              "buildTarget": "prompt-log:build:development"
             }
           },
           "defaultConfiguration": "development"
